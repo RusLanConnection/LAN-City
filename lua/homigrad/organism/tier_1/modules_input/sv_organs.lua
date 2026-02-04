@@ -36,7 +36,7 @@ input_list.liver = function(org, bone, dmg, dmgInfo)
 	
 	hg.AddHarmToAttacker(dmgInfo, (org.liver - oldDmg) * 3, "Liver damage harm")
 	
-	org.shock = org.shock + dmg * 20
+	org.shock = org.shock + dmg * 2
 	org.painadd = org.painadd + dmg * 35
 	
 	org.liver = math.min(org.liver + dmg, 1)
