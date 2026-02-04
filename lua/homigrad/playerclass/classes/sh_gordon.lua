@@ -35,7 +35,7 @@ local function createhev(ply)
     ply.HEV = {}
     ply.HEV.Morphine = maxMorphine
     ply.HEV.Medicine = maxMedicine
-    ply.HEV.Power = maxPower * (0.75)
+    ply.HEV.Power = maxPower * 0.75
     ply.organism.HEV = ply.HEV
     ply:SetNetVar("HEVMedicine", ply.HEV.Medicine)
     ply:SetNetVar("HEVPower", ply.HEV.Power)
@@ -143,7 +143,7 @@ function CLASS.On(self, data)
         self:SyncArmor()
         hevchanged(self)
         
-        print("JOOOPAAAA")
+        --print("JOOOPAAAA")
     end
 end
 
@@ -578,6 +578,7 @@ elseif SERVER then
     }
 
     local hev_color = Color(255,125,0)
+    local death_color = Color(155,0,0)
 
     hook.Add("Org Think","gordon_healing",function(ply, org, timeValue)
 
@@ -586,7 +587,11 @@ elseif SERVER then
                 org.emitflatline = true
                 hg.GetCurrentCharacter(ply):EmitSound("hl1/fvox/flatline.wav")
                 if CurrentRound and CurrentRound().name == "coop" then
-                    PrintMessage(HUD_PRINTTALK,"<c=155,0,0>"..phrases[math.random(#phrases)].."</c>")
+
+                    for _,ply in player.Iterator() do
+                        ply:LanRPChatPrint(death_color,phrases[math.random(#phrases)])
+                    end
+
                 end
             end
         end

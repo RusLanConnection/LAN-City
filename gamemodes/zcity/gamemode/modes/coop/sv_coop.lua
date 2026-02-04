@@ -7,8 +7,8 @@ MODE.ROUND_TIME = 9000
 hg.NextMap = ""
 
 
-local coop_rts = CreateConVar("zb_coop_rts", "0", FCVAR_PROTECTED, "apeh twix", 0, 1)
-local coop_rts_cmb = CreateConVar("zb_coop_rts_cmb", "0", FCVAR_PROTECTED, "hepa xiwt", 0, 1)
+local coop_rts = CreateConVar("zb_coop_rts", "1", FCVAR_PROTECTED, "apeh twix", 0, 1)
+local coop_rts_cmb = CreateConVar("zb_coop_rts_cmb", "1", FCVAR_PROTECTED, "hepa xiwt", 0, 1)
 
 MODE.LootSpawn = false
 
@@ -395,7 +395,7 @@ local function CanPossessNPC(ply, npc)
     if ply:Alive() then return false end
     if CurrentRound().name ~= "coop" then return false end
     if not coop_rts:GetBool() then return false end
-    if ply.hasUsedRTS and not ply:IsAdmin() then return false end
+    --if ply.hasUsedRTS and not ply:IsAdmin() then return false end
     
     local npcClass = npc:GetClass()
     if friendlyNPCClasses[npcClass] then return true end
