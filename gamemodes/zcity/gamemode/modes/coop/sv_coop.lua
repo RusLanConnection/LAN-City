@@ -496,7 +496,7 @@ hook.Add("PlayerButtonDown", "checks", function(ply, button)
     if CurrentRound().name ~= "coop" then return end
     if not coop_rts:GetBool() then return end
     if ply:Alive() then return end
-    if ply.hasUsedRTS and not ply:IsAdmin() then return end
+    --if ply.hasUsedRTS and not ply:IsAdmin() then return end
     
     local observeTarget = ply:GetObserverTarget()
     local searchPos
