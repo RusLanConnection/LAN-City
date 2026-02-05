@@ -409,7 +409,11 @@ hook.Add("Player Think", "homigrad-dropholstered", function(ply)
 	if ply.organism and ply.organism.allowholster then return end
 
 	local activewep = ply:GetActiveWeapon()
-	for i,wep in ipairs(ply:GetWeapons()) do
+	local weps = ply:GetWeapons()
+	local wep
+	for i = 1, #weps do
+		wep = weps[i]
+		
 		if wep.NoHolster and activewep ~= wep and wep.picked then 
 			ply:DropWeapon(wep)
 		end
@@ -1292,17 +1296,18 @@ hook.Add("PlayerDeath","I_Feel_Death",function(ply)
 end)
 
 hook.Add("PostEntityTakeDamage", "GlassShards", function(ent, dmginfo)
-	if ent:GetClass() ~= "func_breakable_surf" then return end
-	if math.random(10) == 5 then
-		local glass = ents.Create("weapon_hg_glassshard")
-		local inf = dmginfo:GetInflictor()
-		glass:SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
-		glass:SetAngles(AngleRand(-180, 180))
-		glass:Spawn()
-		glass.IsSpawned = true
-		glass.init = true
-		--Player(2):SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
-		--print(ent, glass) -- bro im spawned and etc.
+	if IsValid(ent) and math.random(4) == 2 then
+		if ent:GetClass() == "func_breakable_surf" or (ent:GetClass() == "func_breakable" and ent:GetMaterialType() == MAT_GLASS) then
+			local glass = ents.Create("weapon_hg_glassshard")
+			local inf = dmginfo:GetInflictor()
+			glass:SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
+			glass:SetAngles(AngleRand(-180, 180))
+			glass:Spawn()
+			glass.IsSpawned = true
+			glass.init = true
+			--Player(2):SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
+			--print(ent, glass) -- bro im spawned and etc.
+		end
 	end
 end)
 
@@ -1490,7 +1495,7 @@ local warmingEnts = {
 	["vfire"] = 15,
 }
 
-hg.ColdMapsTemp = {
+hg.MapTemps = {
 	["gm_wintertown"] = -10,
 	["cs_drugbust_winter"] = -10,
 	["cs_office"] = -10,
@@ -1504,62 +1509,122 @@ hg.ColdMapsTemp = {
 	["mu_riverside_snow"] = -10,
 	["gm_fork_north"] = -16,
 	["gm_fork_north_day"] = -21,
-	["gm_ijm_boreas"] = -40
+	["gm_ijm_boreas"] = -40,
+	["gm_construct"] = 20 -- тест температуры
 }
 
-hook.Add("Org Think", "ColdMaps", function(owner, org, timeValue)
+function hg.TranslateToBodyTemp(temp, org)
+	return math.Remap(temp, -20, 20, 27, org and org.needed_temp or 36.7) -- math.Remap doesn't clamp
+end
+
+hook.Add("Org Think", "BodyTemperature", function(owner, org, timeValue) -- переделал систему температуры
 	if not owner:IsPlayer() or not owner:Alive() then return end
 	if owner.GetPlayerClass and owner:GetPlayerClass() and owner:GetPlayerClass().NoFreeze then return end
 
-	if (owner.CheckCold or 0) > CurTime() then return end
-	owner.CheckCold = CurTime() + 0.5--optimization update
+	if (owner.CheckTemp or 0) > CurTime() then return end
+	owner.CheckTemp = CurTime() + 0.5--optimization update
+
 	local timeValue = 0.5
 	local ent = hg.GetCurrentCharacter(owner)
+
 	local IsVisibleSkyBox = util.TraceLine( {
 		start = ent:GetPos() + vector_up * 15,
 		endpos = ent:GetPos() + vector_up * 999999,
 		mask = MASK_SOLID_BRUSHONLY
-	} ).HitSky and hg.ColdMaps[game.GetMap()]
+	} ).HitSky and hg.TemperatureMaps[game.GetMap()]
+
 	org.temperature = org.temperature or 36.7
+
 	local currentPulse = org.pulse or 70
 	local pulseHeat = 0
-	local temp = hg.ColdMapsTemp[game.GetMap()] or -10
+	local temp = hg.MapTemps[game.GetMap()] or -10
 
 	if currentPulse > 80 then
 		local pulseMultiplier = math.min((currentPulse - 70) / 100, 1.2)
 		pulseHeat = timeValue / 50 * pulseMultiplier * 0.2
 	end
 
-	if IsVisibleSkyBox and !owner:InVehicle() then
-		local freezeRate = timeValue / 1500
+	local warming = org.stamina.sub > 0 and 0.5 or 0
+	local ownerpos = owner:GetPos()
+	for i, ent in ipairs(ents.FindInSphere(ownerpos, 200)) do
+		if warmingEnts[ent:GetClass()] then
+			--org.temperature = org.temperature + timeValue * (warmingEnts[ent:GetClass()] / 50 * (1 - ent:GetPos():Distance(owner:GetPos()) / 200))
+			warming = warming + 0.5
+		end
+	end
 
-		org.freezing = true
-		org.temperature = Lerp(freezeRate, org.temperature, temp * 1)
-		org.FreezeSndCD = org.FreezeSndCD or CurTime() + 5
-		if org.FreezeSndCD < CurTime() and owner:Alive() and not org.otrub then
-			org.FreezeSndCD = CurTime() + math.random(30,55)
+	for i, tbl in ipairs(hg.gasolinePath) do
+		--tbl[2] -> true = burned, number = still burning, false = unignited
+		if tbl[2] and isnumber(tbl[2]) and (ownerpos - tbl[1]):LengthSqr() < 200 * 200 then
+			warming = warming + 0.5
+		end
+	end
+
+	local changeRate = timeValue / 30 -- 1 degree every 1 minute
+
+	local temp = (IsVisibleSkyBox and temp or math.max(10, temp)) + warming * 5
+
+	local isFreezing = temp < 0
+	local isHeating = temp > 30
+
+	if temp < -20 then
+		changeRate = changeRate * 2
+	end
+
+	org.tempchanging = changeRate
+
+	if org.heatbuff > 0 then
+		temp = math.max(20, temp)
+	end
+	
+	org.temperature = math.Approach(org.temperature, hg.TranslateToBodyTemp(temp, org), org.tempchanging)
+
+	-- При холоде
+	if owner:Alive() and not org.otrub and isFreezing and org.temperature < 36 then
+		org.FreezeSndCD = org.FreezeSndCD or CurTime() + math.random(5, 15)
+		
+		if org.FreezeSndCD < CurTime() then
+			org.FreezeSndCD = CurTime() + math.random(10, 35)
+
 			ent:EmitSound("zcitysnd/"..(ThatPlyIsFemale(ent) and "fe" or "").."male/freezing_"..math.random(1,8)..".mp3",65)
 		end
-		org.FreezeDMGCd = org.FreezeDMGCd or CurTime()
-		if org.temperature < 35 and org.temperature > 24 and org.FreezeDMGCd < CurTime()  then
-			org.painadd = org.painadd + math.Rand(0,1) * ((35 - org.temperature) / 35 * 4 + 1)
-			org.FreezeDMGCd = CurTime() + 0.5
-		end
-	else
-		org.freezing = false
+	end
+	
+	org.FreezeDMGCd = org.FreezeDMGCd or CurTime()
+	if isFreezing and org.temperature < 35 and org.FreezeDMGCd < CurTime() then
+		org.painadd = org.painadd + math.Rand(0, 1) * ((35 - org.temperature) / 35 * 4 + 1)
+		org.FreezeDMGCd = CurTime() + 0.5
 	end
 
-	for i, ent in ipairs(ents.FindInSphere(owner:GetPos(), 200)) do
-		if warmingEnts[ent:GetClass()] then
-			org.temperature = org.temperature + timeValue * (warmingEnts[ent:GetClass()] / 50 * (1 - ent:GetPos():Distance(owner:GetPos()) / 200))
+	-- При жаре
+	if owner:Alive() and isHeating and org.temperature > 40 then
+		org.VomitCD = org.VomitCD or CurTime() + math.random(35, 75)
+		
+		if org.VomitCD < CurTime() then
+			org.VomitCD = CurTime() + math.random(35, 75)
+			owner:Notify(hg.get_phraselist(owner, "heatvomit"), 1, "phrase", 1, nil, Color(255, 85, 85, 255))
+			
+			timer.Simple(3, function()
+				hg.organism.Vomit(org.owner)
+			end)
 		end
 	end
+
+	org.HeatDMGCd = org.HeatDMGCd or CurTime()
+	if isHeating and org.temperature > 38 and org.HeatDMGCd < CurTime() and not org.otrub then
+		org.painadd = org.painadd + math.Rand(0.5, 1) * ((org.temperature - 38) / 38 * 6 + 1)
+		org.HeatDMGCd = CurTime() + 0.5
+	end
+
+	org.heatbuff = math.Approach(org.heatbuff, isFreezing and -30 or 30, timeValue * 1)
+
+	org.heatbuff = math.Approach(org.heatbuff, 120, timeValue * math.Clamp(warming * 1, 0, 4))
+
 	//PrintTable(ents.FindInSphere(org.owner:GetPos(), 128))
 	--мб сделать тепло от env_sprite?
 	--hz...
 	--дороговато
 end)
-
 
 hook.Add("SetupMove","hg_FallSound",function(ply)
 	--if not ply then return end
