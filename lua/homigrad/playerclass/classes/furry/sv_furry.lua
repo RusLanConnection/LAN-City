@@ -113,7 +113,7 @@ local uwuspeak_phrases = {
 }
 
 hook.Add("HG_ReplacePhrase", "UwUPhrases", function(ent, phrase, muffed, pitch)
-	if ent.PlayerClassName == "furry" then
+	if IsValid(ent) and ent.PlayerClassName == "furry" then
 		local inpain = ent.organism.pain > 60
 		local phr = (inpain and fur_pain[math.random(#fur_pain)] or uwuspeak_phrases[math.random(#uwuspeak_phrases)])
 

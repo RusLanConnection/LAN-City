@@ -224,7 +224,7 @@ if SERVER then
 	end
 
 	hook.Add("HG_ReplacePhrase", "metropolice_phrase", function(ent, phrase, muffed, pitch)
-		if ent.PlayerClassName == "Metrocop" then
+		if IsValid(ent) and ent.PlayerClassName == "Metrocop" then
 			return ent, mtcop_phrases[math.random(#mtcop_phrases)], muffed, pitch
 		end
 	end)

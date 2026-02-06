@@ -381,7 +381,7 @@ if SERVER then
 	}
 
 	hook.Add("HG_ReplacePhrase", "combine_phrase", function(ent, phrase, muffed, pitch)
-		if ent.PlayerClassName == "Combine" then
+		if IsValid(ent) and ent.PlayerClassName == "Combine" then
 			return ent, cmb_phrases[math.random(#cmb_phrases)], muffed, pitch
 		end
 	end)

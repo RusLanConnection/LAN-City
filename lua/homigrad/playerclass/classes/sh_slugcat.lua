@@ -195,9 +195,11 @@ if SERVER then
 	}
 
 	hook.Add("HG_ReplacePhrase", "ScugPhrases", function(ent, phrase, muffed, pitch)
-		local wawer = string.match(ent:GetModel(), "scug")
-		if wawer then
-			return ent, slugy_phrases[math.random(#slugy_phrases)], muffed, pitch
+		if IsValid(ent) then
+			local wawer = string.match(ent:GetModel(), "scug")
+			if wawer then
+				return ent, slugy_phrases[math.random(#slugy_phrases)], muffed, pitch
+			end
 		end
 	end)
 end
