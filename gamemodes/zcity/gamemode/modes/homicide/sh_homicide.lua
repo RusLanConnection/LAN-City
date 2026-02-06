@@ -42,10 +42,12 @@ You are equipped with various weapons, poisons and explosives, grenades and your
 			ply:Give("weapon_hg_smokenade_tpik")
 			ply:Give("weapon_traitor_ied")
 			ply:Give("weapon_traitor_poison1")
+			ply:Give("weapon_traitor_poison2")
+			ply:Give("weapon_traitor_poison3")
+			ply:Give("weapon_traitor_poison4")
+			ply:Give("weapon_traitor_poison_consumable")
 			ply:Give("weapon_traitor_suit")
 			ply:Give("weapon_hg_jam")
-			-- ply:Give("weapon_traitor_poison2")
-			-- ply:Give("weapon_traitor_poison3")
 			
 			ply.organism.stamina.max = 220
 			local inv = ply:GetNetVar("Inventory", {})
@@ -188,29 +190,29 @@ For people who like to play checkers.]],
 	--==//
 	
 	--==\\
-	["traitor_chemist"] = {
-		Name = "Chemist",
-		Description = [[Has multiple chemical agents and epipen and knife.
-Resistant to a certain degree to all chemical agents mentioned.
-Can detect presence and potency of chemical agents in the air.]],
-		Objective = "You're a chemist who decided to use his knowledge to hurt others. Poison everything.",
-		SpawnFunction = function(ply)
-			ply:Give("weapon_sogknife")
-			ply:Give("weapon_adrenaline")
-			ply:Give("weapon_traitor_poison1")
-			ply:Give("weapon_traitor_poison2")
-			ply:Give("weapon_traitor_poison3")
-			ply:Give("weapon_traitor_poison4")
-			ply:Give("weapon_traitor_poison_consumable")
+-- 	["traitor_chemist"] = {
+-- 		Name = "Chemist",
+-- 		Description = [[Has multiple chemical agents and epipen and knife.
+-- Resistant to a certain degree to all chemical agents mentioned.
+-- Can detect presence and potency of chemical agents in the air.]],
+-- 		Objective = "You're a chemist who decided to use his knowledge to hurt others. Poison everything.",
+-- 		SpawnFunction = function(ply)
+-- 			ply:Give("weapon_sogknife")
+-- 			ply:Give("weapon_adrenaline")
+-- 			ply:Give("weapon_traitor_poison1")
+-- 			ply:Give("weapon_traitor_poison2")
+-- 			ply:Give("weapon_traitor_poison3")
+-- 			ply:Give("weapon_traitor_poison4")
+-- 			ply:Give("weapon_traitor_poison_consumable")
 			
-			ply.organism.stamina.max = 220
-			local inv = ply:GetNetVar("Inventory", {})
-			inv["Weapons"]["hg_flashlight"] = true
+-- 			ply.organism.stamina.max = 220
+-- 			local inv = ply:GetNetVar("Inventory", {})
+-- 			inv["Weapons"]["hg_flashlight"] = true
 			
-			ply:SetNetVar("Inventory", inv)
-			MODE.CleanChemicalsOfPlayer(ply)
-		end,
-	},
+-- 			ply:SetNetVar("Inventory", inv)
+-- 			MODE.CleanChemicalsOfPlayer(ply)
+-- 		end,
+-- 	},
 	--==//
 	-- ["traitor_demoman"] = {
 		-- Name = "Demoman",
@@ -311,7 +313,7 @@ MODE.RoleChooseRoundTypes = {
 		Traitor = {
 			["traitor_default"] = true,
 			["traitor_infiltrator"] = true,
-			["traitor_chemist"] = true,
+			--["traitor_chemist"] = true,
 			["traitor_assasin"] = true,
 			--; ОБЪЕДЕНИТЬ ХИМИКА И ДИВЕРСАНТА!!! наверное
 			-- ["traitor_demoman"] = true,
