@@ -120,14 +120,16 @@ if SERVER then
 			org.owner:Notify("It smells like almonds in here... Perfume, perhaps?", true, "cyanide", 3)
 		end
 
-		if (not org.poison3notificate) and ((org.poison3 + 20) < CurTime()) then
+		--[[if (not org.poison3notificate) and ((org.poison3 + 5) < CurTime()) then
 			org.poison3notificate = true
 			org.owner:Notify("It's getting difficult to breathe... for some reason...", true, "cyanide2", 3)
-			org.owner:EmitSound(ThatPlyIsFemale(org.owner) and "breathing/inhale/female/inhale_0"..math.random(5)..".wav" or "breathing/inhale/male/inhale_0"..math.random(4)..".wav",65)	
-		end
+			--org.owner:EmitSound(ThatPlyIsFemale(org.owner) and "breathing/inhale/female/inhale_0"..math.random(5)..".wav" or "breathing/inhale/male/inhale_0"..math.random(4)..".wav",65)	
+		end]]
 
-		if (org.poison3 + 30) < CurTime() then
+		if (org.poison3 + 10) < CurTime() then
         	org.o2.regen = 0
+			org.poison3notificate = true
+			org.owner:Notify("It's getting difficult to breathe... for some reason...", true, "cyanide2", 3)
 		end
 	end)
 end

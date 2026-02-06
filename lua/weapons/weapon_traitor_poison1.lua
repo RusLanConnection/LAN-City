@@ -147,14 +147,16 @@ if SERVER then
 		if not owner:IsPlayer() or not owner:Alive() then return end
 		if ( (not org.poison1) or (not org.alive) ) or not org.owner:IsPlayer() then return end
 		local curtime =  CurTime()
-		if (not org.poison1notificate) and ((org.poison1 + 20) < curtime) then
+		--[[if (not org.poison1notificate) and ((org.poison1 + 20) < curtime) then
 			org.poison1notificate = true
 			org.owner:Notify("I can't... properly breathe...", true, "poison1", 3)
-			org.owner:EmitSound( ( ThatPlyIsFemale(org.owner) and "vo/npc/female01/moan0"..math.random(5)..".wav" ) or "vo/npc/male01/moan0"..math.random(5)..".wav")
-		end
+			--org.owner:EmitSound( ( ThatPlyIsFemale(org.owner) and "vo/npc/female01/moan0"..math.random(5)..".wav" ) or "vo/npc/male01/moan0"..math.random(5)..".wav")
+		end]]
 
 		if (org.poison1 + 30) < curtime then
         	org.o2.regen = 0
+			org.poison1notificate = true
+			org.owner:Notify("I can't... properly breathe...", true, "poison1", 3)
 		end
 	end)
 end
