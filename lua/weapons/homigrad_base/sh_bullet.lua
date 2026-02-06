@@ -303,6 +303,8 @@ bulletHit = function(ply, tr, dmgInfo, bullet, Weapon)
 			util.Decal("Impact.ShootPowderAdd", trPos + trNormal, trPos - trNormal)
 		end
 
+		force = math.min(force, 45)
+
 		gasInertia(trPos, force * 2)
 		gasInertia(trStart, force * 4)
 	end

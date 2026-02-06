@@ -14,7 +14,7 @@ MODE.OverrideSpawn = true
 MODE.LootSpawn = true
 MODE.LootOnTime = true
 
-MODE.Chance = 0.05
+MODE.Chance = 0.1
 MODE.LootDivTime = 500
 
 MODE.LootTable = {
@@ -281,7 +281,7 @@ MODE.Types.standard = {
 		ply:Give("weapon_px4beretta")
 		ply.organism.recoilmul = 1
 	end,
-	PoliceTime = 220,
+	PoliceTime = 120,
 	SkillIssue = 4,
 	PoliceAllowed = true,
 	PoliceEquipment = function(ply)
@@ -416,7 +416,7 @@ MODE.Types.wildwest = {
 			v:SetNetVar("Inventory",inv)
 		end
 	end,
-	PoliceTime = 220,
+	PoliceTime = 120,
 	PoliceAllowed = false,
 	SkillIssue = 3,
 	PoliceEquipment = function(ply)
@@ -490,7 +490,7 @@ MODE.Types.gunfreezone = {
 	end,
 	GunManLoot = function(ply)
 	end,
-	PoliceTime = 120,
+	PoliceTime = 60,
 	PoliceAllowed = true,
 	SkillIssue = 4,
 	PoliceEquipment = function(ply)
@@ -572,7 +572,7 @@ MODE.Types.soe = {
 
 		ply:SetNetVar("CurPluv", "pluvboss")
 	end,
-	PoliceTime = 250,
+	PoliceTime = 120,
 	PoliceAllowed = true,
 	SkillIssue = 3,
 	PoliceEquipment = function(ply)
@@ -671,13 +671,15 @@ function MODE:Intermission()
 	MODE.TraitorWordSecond = MODE.TraitorWords[math.random(1, #MODE.TraitorWords)]
 	local traitors_needed = 1
 	
-	if(MODE.ShouldStartRoleRound())then
-		traitors_needed = math.ceil(player_count / 9)
+	--if(MODE.ShouldStartRoleRound())then
+		traitors_needed = math.ceil(player_count / 6)
 		
-		if(player_count > 8 and math.random(1, 8) == 1)then
-			traitors_needed = traitors_needed + 1
+		if player_count >= 7 and player_count < 10 then
+			traitors_needed = 2
 		end
-	end
+	--end
+
+	--print(traitors_needed)
 
 	MODE.TraitorExpectedAmt = traitors_needed
 	local main_traitor = nil
