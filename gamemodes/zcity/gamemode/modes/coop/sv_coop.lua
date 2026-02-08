@@ -45,9 +45,9 @@ MODE.LootTable = {
         {2,"weapon_medkit_sh"},
 		{2,"weapon_bloodbag"},
 		
-        {1,"weapon_mini14"},
+        --{1,"weapon_mini14"},
         {1,"ent_ammo_5.56x45mm"},
-        {1,"weapon_m16a2"},
+       --{1,"weapon_m16a2"},
     }},
 	
 	[2] = {1, {
@@ -69,18 +69,18 @@ MODE.LootTable = {
         {5,"weapon_naloxone"},
         {4,"weapon_mannitol"},
         
-        {9,"weapon_hk_usp"},
-        {8,"weapon_revolver357"},
-		{6,"weapon_spas12"},
-		{5,"weapon_mp7"},
-		{5,"weapon_osipr"},
-        {2,"weapon_ash12"},
-        {4,"weapon_akm"},
-        {3,"weapon_rpk"},
-        {1,"weapon_ptrd"},
-        {6,"ent_ammo_14.5x114mm"},
-        {2,"weapon_hg_rpg"},
-        {6,"ent_ammo_rpg7"},
+        --{9,"weapon_hk_usp"},
+        --{8,"weapon_revolver357"},
+		--{6,"weapon_spas12"},
+		--{5,"weapon_mp7"},
+		--{5,"weapon_osipr"},
+        --{2,"weapon_ash12"},
+        --{4,"weapon_akm"},
+        --{3,"weapon_rpk"},
+        --{1,"weapon_ptrd"},
+        --{6,"ent_ammo_14.5x114mm"},
+        --{2,"weapon_hg_rpg"},
+        --{6,"ent_ammo_rpg7"},
         
         
 
