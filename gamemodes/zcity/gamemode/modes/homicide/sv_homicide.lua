@@ -572,7 +572,7 @@ MODE.Types.soe = {
 
 		ply:SetNetVar("CurPluv", "pluvboss")
 	end,
-	PoliceTime = 120,
+	PoliceTime = 150,
 	PoliceAllowed = true,
 	SkillIssue = 3,
 	PoliceEquipment = function(ply)
