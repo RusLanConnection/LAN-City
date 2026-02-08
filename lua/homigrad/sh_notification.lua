@@ -394,21 +394,3 @@ else
 		end
 	end)
 end
-
-if SERVER then
-	local ply_meta = FindMetaTable("Player")
-	
-	util.AddNetworkString("lanrp.ChatPrint")
-
-	function ply_meta:LanRPChatPrint(...)
-	    net.Start("lanrp.ChatPrint")
-	        net.WriteTable({...})
-	    net.Send(self)
-	end
-else
-	net.Receive("lanrp.ChatPrint", function()
-   		local tbl = net.ReadTable()
-
-   		chat.AddText(unpack(tbl))
-	end)
-end

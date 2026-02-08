@@ -143,7 +143,6 @@ function CLASS.On(self, data)
         end
         self:SyncArmor()
         hevchanged(self)
-        --print("JOOOPAAAA")
     end
 end
 
