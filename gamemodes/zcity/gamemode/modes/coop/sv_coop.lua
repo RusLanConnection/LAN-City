@@ -60,10 +60,14 @@ MODE.LootTable = {
         {5,"ent_ammo_12.7x108mm"},
         {7,"ent_ammo_7.62x39mm"},
         {7,"ent_ammo_5.45x39mm"},
+        {6,"ent_ammo_rpg-7projectile"},
         
         {8,"weapon_bigconsumable"},
 		{7,"weapon_painkillers"},
 		{6,"weapon_bigbandage_sh"},
+        {5,"weapon_morphine"},
+        {5,"weapon_naloxone"},
+        {4,"weapon_mannitol"},
         
         {9,"weapon_hk_usp"},
         {8,"weapon_revolver357"},

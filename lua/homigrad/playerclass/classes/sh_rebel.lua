@@ -216,7 +216,6 @@ local function giveSubClassLoadout(ply, subClass)
 
     ply:SyncArmor()
 
-
     ply:Give("weapon_melee")
     ply:Give("weapon_walkie_talkie")
 end
