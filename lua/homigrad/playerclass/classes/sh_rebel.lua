@@ -186,7 +186,7 @@ local rebel_subclasses = {
 
     grenadier = {
         give_fn = function(ply)
-            ply:Give("weapon_hg_rebelrpg")
+            ply:Give(math.random(0,1) == 1 and "weapon_hg_rebelrpg" or "weapon_hg_rpg")
             ply:Give("weapon_claymore")
             ply:Give("weapon_traitor_ied")
             ply:Give("weapon_hg_slam")
