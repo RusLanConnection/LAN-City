@@ -988,6 +988,13 @@ hook.Add("EntityTakeDamage", "homigrad-damage", function(ent, dmgInfo)
 			should = org.dmgstack[hitgroup][1] > hitgroup_max
 			--print(rag, should, hitgroup == HITGROUP_HEAD, bonename, hitgroup, HITGROUP_HEAD)
 			if should and hitgroup == HITGROUP_HEAD then
+				--[[if not IsValid(ply) then
+					ply = hg.RagdollOwner(rag)
+				end
+				if not isbool(ply) then
+					hook.Run("OnHeadExplode", ply, rag)
+				end]]
+
 				Gib_Input(rag, rag:TranslatePhysBoneToBone(bone), dirCool * len)
 
 				rag.headexploded = true

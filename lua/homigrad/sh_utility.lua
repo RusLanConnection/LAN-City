@@ -1507,6 +1507,7 @@ local IsValid = IsValid
 
 
 	local vecZero = Vector()
+	local vomitVPAng = Angle(1,0,0)
 	hook.Add("SetupMove", "HG(StartCommand)", function(ply, mv, cmd)
 		--if CLIENT then return end
 		-- if(1)then return end
@@ -1628,7 +1629,7 @@ local IsValid = IsValid
 		if ply:GetNetVar("vomiting", 0) > CurTime() then
 			cmd:AddKey(IN_DUCK)
 			mv:AddKey(IN_DUCK)
-			if ply == lply then ViewPunch(Angle(1,0,0)) end
+			if ply == lply then ViewPunch(vomitVPAng) end
 		end
 
 		--\\Running
