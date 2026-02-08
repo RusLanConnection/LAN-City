@@ -48,7 +48,7 @@ net.Receive("HMCD_RoundStart",function()
 			chat.AddText("Traitor secret words are: \"" .. MODE.TraitorWord .. "\" and \"" .. MODE.TraitorWordSecond .. "\".")
 		end
 
-		if(lply.MainTraitor)then
+		--[[if(lply.MainTraitor)then
 			if(MODE.TraitorExpectedAmt > 1)then
 				chat.AddText("Traitor names (only you, as a main traitor can see them):")
 			end
@@ -62,7 +62,7 @@ net.Receive("HMCD_RoundStart",function()
 					chat.AddText(traitor_info[1], "\t" .. traitor_info[2])
 				end
 			end
-		end
+		end]]
 	end
 
 	lply.Profession = net.ReadString()
@@ -341,7 +341,7 @@ function MODE:HUDPaint()
 	if(lply.isTraitor)then
 		cur_y = cur_y + ScreenScale(20)
 
-		if(lply.MainTraitor)then
+		--[[if(lply.MainTraitor)then
 			MODE.TraitorsLocal = MODE.TraitorsLocal or {}
 
 			if(#MODE.TraitorsLocal > 1)then
@@ -364,10 +364,24 @@ function MODE:HUDPaint()
 			cur_y = cur_y + ScreenScale(15)
 
 			draw.SimpleText("\"" .. MODE.TraitorWordSecond .. "\"", "ZB_HomicideMedium", sw * 0.5, cur_y, color_white_faded, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-		end
-	end
+		end]]
 
-	if(lply.Profession and lply.Profession != "")then
+		MODE.TraitorsLocal = MODE.TraitorsLocal or {}
+
+		if(#MODE.TraitorsLocal > 1)then
+			draw.SimpleText("Traitor secret words:", "ZB_HomicideMedium", sw * 0.5, cur_y, ColorRole, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+			cur_y = cur_y + ScreenScale(15)
+
+			draw.SimpleText("\"" .. MODE.TraitorWord .. "\"", "ZB_HomicideMedium", sw * 0.5, cur_y, color_white_faded, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+			cur_y = cur_y + ScreenScale(15)
+
+			draw.SimpleText("\"" .. MODE.TraitorWordSecond .. "\"", "ZB_HomicideMedium", sw * 0.5, cur_y, color_white_faded, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+	end	
+
+	if not lply.isTraitor and (lply.Profession and lply.Profession != "")then
 		cur_y = cur_y + ScreenScale(20)
 
 		draw.SimpleText("Occupation: " .. ((MODE.Professions[lply.Profession] and MODE.Professions[lply.Profession].Name or lply.Profession) or lply.Profession), "ZB_HomicideMedium", sw * 0.5, cur_y, color_role_innocent, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

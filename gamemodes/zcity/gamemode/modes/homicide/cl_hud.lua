@@ -104,7 +104,7 @@ hook.Add("HUDPaint", "HMCD_SubRoles_Abilities", function()
 				end
 			end
 			
-			if(ply.SubRole == "traitor_chemist")then
+			if(ply.SubRole == "traitor_default")then
 				local after_side_bar_offset = 5
 				local bar_border = 5
 				local bar_width = ScreenScale(20)
@@ -149,6 +149,10 @@ hook.Add("HUDPaint", "HMCD_SubRoles_Abilities", function()
 		
 		--//
 	end
+end)
+
+hook.Add("PlayerSpawn", "ResetChemicalAccumulation", function()
+    LocalPlayer().PassiveAbility_VGUI_ChemicalAccumulation = {}
 end)
 
 
@@ -357,9 +361,9 @@ hook.Add("HUDPaint", "DrawTraitorPanel", function()
         local has_assistants = false
         MODE.TraitorsLocal = MODE.TraitorsLocal or {}
         
-        if #MODE.TraitorsLocal > (ply.MainTraitor and 1 or 0) then
+        --[[if #MODE.TraitorsLocal > (ply.MainTraitor and 1 or 0) then
             has_assistants = true
-        end
+        end]]
         
         if has_assistants then
             draw.SimpleText("Your Assistants:", "TraitorPanelText", x + traitor_panel.width/2, assist_y, 

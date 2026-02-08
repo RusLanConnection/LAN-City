@@ -281,7 +281,7 @@ MODE.Types.standard = {
 		ply:Give("weapon_px4beretta")
 		ply.organism.recoilmul = 1
 	end,
-	PoliceTime = 120,
+	PoliceTime = 180,
 	SkillIssue = 4,
 	PoliceAllowed = true,
 	PoliceEquipment = function(ply)
@@ -672,7 +672,7 @@ function MODE:Intermission()
 	local traitors_needed = 1
 	
 	--if(MODE.ShouldStartRoleRound())then
-		traitors_needed = math.ceil(player_count / 6)
+		traitors_needed = 2--math.ceil(player_count / 6) ПОТОМ УБРАТЬ
 		
 		if player_count >= 7 and player_count < 10 then
 			traitors_needed = 2
@@ -742,7 +742,7 @@ function MODE:Intermission()
 		end
 	end
 
-	self.saved.PoliceTime = CurTime() + math.min(self.Types[self.Type].PoliceTime * (#player.GetAll() / 4),self.Types[self.Type].PoliceTime * 2.2)
+	self.saved.PoliceTime = CurTime() + math.max(self.Types[self.Type].PoliceTime * (#player.GetAll() / 6), self.Types[self.Type].PoliceTime)
 	self.PoliceSpawned = false
 	self.PoliceAllowed = self.Types[self.Type].PoliceAllowed
 
@@ -947,7 +947,7 @@ function MODE:RoundThink()
 		self.swatDeployed = true
 		local currentType = self.Type 
 		
-		timer.Create("HMCDSpawnSWAT", 60, 1, function()
+		timer.Create("HMCDSpawnSWAT", 30, 1, function()
 			if zb.ROUND_STATE ~= 1 or not MODE or MODE.Type ~= currentType then return end 
 			
 			if not MODE.Types[MODE.Type] or not MODE.Types[MODE.Type].PoliceAllowed then return end

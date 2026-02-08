@@ -60,7 +60,7 @@ function ENT:Think()
 				local mode_hmcd = (zb and zb.modes) and zb.modes["hmcd"] or false
 				
 				if (mode_hmcd) then
-					if(ent.SubRole == "traitor_chemist")then
+					if(ent.SubRole == "traitor_default")then
 						local ply_cyanide_accumulated = mode_hmcd.AddChemicalToPlayer(ent, "HCN", 10)
 						
 						if(ply_cyanide_accumulated > 100)then

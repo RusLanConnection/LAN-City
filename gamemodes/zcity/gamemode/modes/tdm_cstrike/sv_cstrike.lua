@@ -193,8 +193,8 @@ function MODE:EndRound()
         
         if IsValid(zb.hostage) and not zb.hostage.organism.alive then
             local max, maxTeam = 0
-            if zb.HarmDoneDetailed[zb.hostageindex] then
-                for steamid, tbl in pairs(zb.HarmDone[zb.hostageindex]) do
+            if zb.HarmDoneDetailed[zb.hostage] then
+                for steamid, tbl in pairs(zb.HarmDone[zb.hostage]) do
                     if tbl.harm > max then
                         max = tbl.harm
                         maxTeam = tbl.teamAttacker
@@ -366,8 +366,6 @@ hook.Add("HarmDone", "MoneyGive", function(ply, victim, amt)
     local add = amt * MODE.KillMoney * (ply:Team() == victim:Team() and -1 or 1)
     
     add = math.Round(add,0)
-
-    --print(add,ply,ply:GetNWInt("TDM_Money"),victim)
 
     ply:SetNWInt( "TDM_Money", math.max(ply:GetNWInt( "TDM_Money" ) + add, 0) )
 

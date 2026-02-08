@@ -568,7 +568,7 @@ if SERVER then
 		if(org and IsValid(org.owner) and mode_hmcd)then
 			local organism_owner = org.owner
 			
-			if(organism_owner.SubRole == "traitor_chemist")then
+			if(organism_owner.SubRole == "traitor_default")then
 				if(self.FoodModelsKCNNeutralizers and self.FoodModelsKCNNeutralizers[self:GetModel()])then
 					self.ConsumePoisoned_KCN = math.max(self.ConsumePoisoned_KCN or 0 - self.FoodModelsKCNNeutralizers[self:GetModel()], 0)
 				end
