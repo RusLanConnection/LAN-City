@@ -860,6 +860,14 @@ local checkpulsebones = {
 }
 local hg_blood_fps = ConVarExists("hg_blood_fps") and GetConVar("hg_blood_fps") or CreateClientConVar("hg_blood_fps", 24, true, nil, "fps to draw blood", 12, 165)
 
+local pitchAddClasses = {
+	["furry"] = 20,
+	["headcrabzombie"] = -60
+}
+local muffedClasses = {
+	["headcrabzombie"] = true
+}
+
 hook.Add("Player-Ragdoll think", "organism-think-client-blood", function(ply, ent, time)
 	--local ent = IsValid(ply.FakeRagdoll) and ply.FakeRagdoll or ply
 	--print(ply,ent,ply.organism.owner,ply.new_organism.owner)
@@ -878,7 +886,7 @@ hook.Add("Player-Ragdoll think", "organism-think-client-blood", function(ply, en
 		local pulse = org.heartbeat
 		ent.pulsethink = ent.pulsethink or 0
 		local speed = math.Clamp(org.heartbeat / 60, 1, 120) * 0.5 * (org.o2[1] < 8 and 0 or 1)
-		ent.pulsethink = ent.pulsethink + (org.heartbeat > 1 and 1 or 0) * (org.holdingbreath and 0 or 1) * FrameTime() * 4 * (speed)
+		ent.pulsethink = ent.pulsethink + (org.heartbeat > 1 and 1 or 0) * (org.holdingbreath and 0 or 1) * FrameTime() * 4 * (speed) * (org.lungsfunction and 1 or 0)
 
 		local torso = ent:LookupBone("ValveBiped.Bip01_Spine2")
 		--local chest = ent:LookupBone("ValveBiped.Bip01_Spine1")
@@ -907,7 +915,17 @@ hook.Add("Player-Ragdoll think", "organism-think-client-blood", function(ply, en
 				if ent.armors then
 					muffed = ent.armors["face"] == "mask2" or ent.PlayerClassName == "Combine"
 				end
-				ent:EmitSound("snds_jack_hmcd_breathing/" .. (ThatPlyIsFemale(ent) and "f" or "m") .. math.random(4) .. ".wav", min(heartbeat * 1.0 / ( muffed and 2.5 or 4), 45), math.random(95, 105) + (ply.PlayerClassName and ply.PlayerClassName == "furry" and 20 or 0), 0.5 * (((org.stamina and org.stamina[1] and org.stamina[1] < 160) or org.heartbeat > 140) and 1 or 0.05), CHAN_AUTO, 0, muffed and 16 or 0)
+
+				if ply.PlayerClassName and muffedClasses[ply.PlayerClassName] then
+					muffed = muffedClasses[ply.PlayerClassName]
+				end
+
+				local pitchadd = 0
+				if ply.PlayerClassName and pitchAddClasses[ply.PlayerClassName] then
+					pitchadd = pitchAddClasses[ply.PlayerClassName]
+				end
+
+				ent:EmitSound("snds_jack_hmcd_breathing/" .. (ThatPlyIsFemale(ent) and "f" or "m") .. math.random(4) .. ".wav", min(heartbeat * 1.0 / ( muffed and 2.5 or 4), 45), math.random(95, 105) + pitchadd, 0.5 * (((org.stamina and org.stamina[1] and org.stamina[1] < 160) or org.heartbeat > 140) and 1 or 0.05), CHAN_AUTO, 0, muffed and 16 or 0)
 			elseif org.breathed and sin >= 0.1 then
 				org.breathed = false
 			end
