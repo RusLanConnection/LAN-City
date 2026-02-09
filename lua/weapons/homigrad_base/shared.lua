@@ -601,6 +601,7 @@ else
 	hook.Add("Player Think", "TinnitusPadaet", function(ply, ent)
 		if (ply.TinnitusFactor or 0) > 0 then
 			ply.TinnitusFactor = math.min(math.max((ply.TinnitusFactor or 0) - 0.5, 0),300)
+			--ply:ChatPrint(tostring(ply.TinnitusFactor))
 		end
 	end)
 end
@@ -1300,7 +1301,6 @@ function SWEP:CoreStep()
 	if self:IsClient() then self:Step_SprayVel(dtime) end
 	self.dtimethink = SysTime()
 	//self:ThinkAtt()
-	if self.ThinkAdd then self:ThinkAdd() end
 
 	--self:Animation()
 
