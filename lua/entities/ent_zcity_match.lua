@@ -4,9 +4,11 @@ AddCSLuaFile()
 
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
-ENT.PrintName = "Fire match"
+ENT.PrintName = "Fire Match"
+ENT.Category = "ZCity Other"
 ENT.Spawnable = true
 ENT.Model = "models/weapons/gleb/matchhead.mdl"
+ENT.IconOverride = "vgui/wep_jack_hmcd_matchbox"
 
 ENT.PhysicsSounds = true
 
@@ -62,10 +64,17 @@ function ENT:Initialize()
 end
 
 function ENT:Use(ply)
-	if self:IsPlayerHolding() then return end
+	if self:IsPlayerHolding() or (self.UseCD or 0) > CurTime() then
+		ply:DropObject(self)
+
+		self.UseCD = CurTime() + 0.3
+		return
+	end
 
 	ply:PickupObject(self)
 	self.owner = ply
+
+	self.UseCD = CurTime() + 0.6
 end
 
 
@@ -116,6 +125,9 @@ function ENT:Think()
 
     if CLIENT and (not self.ColorCD or self.ColorCD < CurTime()) then
         color_b:SetLightness(self:GetFireLeft())
+		if color_b:GetLightness() <= 0.1 then
+			self:SetMaterial("models/props_foliage/tree_deciduous_01a_trunk")
+		end
         self:SetColor(color_b)
         self.ColorCD = CurTime() + 0.1
 

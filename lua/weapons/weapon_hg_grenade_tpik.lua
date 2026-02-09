@@ -1,4 +1,4 @@
-﻿if SERVER then AddCSLuaFile() end
+if SERVER then AddCSLuaFile() end
 SWEP.Base = "weapon_tpik_base"
 SWEP.PrintName = "M67"
 SWEP.Instructions = 
@@ -453,7 +453,6 @@ function SWEP:CreateSpoon(entownr)
 		entasd:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 		entasd:Spawn()
 		
-
 		entownr:EmitSound("weapons/m67/m67_spooneject.wav",65)
 
 		if self.SpoonSounds then

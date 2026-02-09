@@ -118,6 +118,7 @@ local helmet_list = {
 
 local face_list = {
     "mask1",
+	"mask3",
     "nightvision1",
     "",
     "",

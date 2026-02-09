@@ -99,7 +99,6 @@ function MODE:Intermission()
             ent.organism.fakePlayer = true
 
             zb.hostage = ent
-            zb.hostageindex = ent:EntIndex()
 
             timer.Simple(1, function()
                 hg.handcuff(ent)

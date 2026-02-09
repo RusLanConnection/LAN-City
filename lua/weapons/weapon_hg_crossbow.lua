@@ -17,8 +17,8 @@ SWEP.FakeAng = Angle(0, 0, 0)
 SWEP.AttachmentPos = Vector(0.5,-1.2,-6.5)
 SWEP.AttachmentAng = Angle(0,0,0)
 --SWEP.MagIndex = 46
-//MagazineSwap
---PrintBones(Entity(1):GetActiveWeapon():GetWM())
+
+
 --PrintTable(Entity(1):GetActiveWeapon():GetWM():GetAttachments())
 SWEP.FakeVPShouldUseHand = true
 

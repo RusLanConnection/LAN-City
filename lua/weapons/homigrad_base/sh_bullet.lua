@@ -303,7 +303,7 @@ bulletHit = function(ply, tr, dmgInfo, bullet, Weapon)
 		util.Decal("Impact.Flesh", trPos + trNormal, trPos - trNormal)
 	end
 
-	local force = bullet.Force
+	--local force = bullet.Force
 	if force >= 20 then
 		local dist = trStart:DistToSqr(trPos)
 		if dist <= 160000 and (math.random(3) == 2 or force >= 30) and tr.Entity:IsWorld() then
@@ -525,7 +525,7 @@ end*/
 function SWEP:FireBullet()
     local gun = self:GetWeaponEntity()
     local owner = self:GetOwner()
-	local isply = IsValid(owner) and owner:IsPlayer()
+	local isply = IsValid(owner) and owner:IsPlayer() and !owner.suiciding
 	local ent = owner
 
 	if self:ShouldUseFakeModel() and not self.NoIdleLoop then self:PlayAnim("idle", 1) end
@@ -657,7 +657,7 @@ function SWEP:FireBullet()
 
     bullet.Speed = ammotype.Speed
 	bullet.Distance = ammotype.Distance or 56756
-	bullet.Filter = {self.worldModel}
+	bullet.Filter = {self, self.worldModel}
 
 	bullet.noricochet = ammotype.noricochet
 	

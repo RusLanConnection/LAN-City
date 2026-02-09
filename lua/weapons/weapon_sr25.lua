@@ -10,15 +10,14 @@ SWEP.SlotPos = 10
 SWEP.ViewModel = ""
 SWEP.WorldModel = "models/weapons/zcity/w_sr25_gleb.mdl"
 --models/weapons/v_sr25_eft.mdl
-SWEP.WorldModelFake = "models/weapons/zcity/c_sr25_eft.mdl" -- Контент инсурги https://steamcommunity.com/sharedfiles/filedetails/?id=3437590840 
---uncomment for funny
---а еще надо настраивать заново zoompos
+SWEP.WorldModelFake = "models/weapons/zcity/c_sr25_eft.mdl"
+
 SWEP.FakePos = Vector(-7, 1.8, 6.2)
 SWEP.FakeAng = Angle(0, 0, 0)
 SWEP.AttachmentPos = Vector(3.5,-0.2,-0.05)
 SWEP.AttachmentAng = Angle(0,0,0)
-//SWEP.MagIndex = 53
-//MagazineSwap
+
+
 --Entity(1):GetActiveWeapon():GetWM():SetSubMaterial(0,"NULL")
 
 SWEP.FakeReloadSounds = {
@@ -74,13 +73,9 @@ if CLIENT then
 		end,
 		[0.4] = function( self, timeMul )
 			if self:Clip1() < 1 then
-				//self:GetOwner():PullLHTowards()
+
 				self:GetWM():ManipulateBoneScale(56, vector_full)
-			else
-				//self:GetWM():ManipulateBoneScale(75, vector_full)
-				//self:GetWM():ManipulateBoneScale(76, vector_full)
-				//self:GetWM():ManipulateBoneScale(77, vector_full)
-			end 
+			end
 		end,
 	}
 end

@@ -1300,6 +1300,7 @@ function SWEP:CoreStep()
 	if self:IsClient() then self:Step_SprayVel(dtime) end
 	self.dtimethink = SysTime()
 	//self:ThinkAtt()
+	if self.ThinkAdd then self:ThinkAdd() end
 
 	--self:Animation()
 

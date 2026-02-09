@@ -29,8 +29,8 @@ SWEP.FakeBodyGroupsPresets = {
 
 --SWEP.MagIndex = 46
 SWEP.FakeEjectBrassATT = "2"
-//MagazineSwap
---PrintBones(Entity(1):GetActiveWeapon():GetWM())
+
+
 --PrintTable(Entity(1):GetActiveWeapon():GetWM():GetAttachments())
 SWEP.FakeVPShouldUseHand = true
 

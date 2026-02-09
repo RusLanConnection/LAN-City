@@ -77,7 +77,7 @@ SWEP.AnimList = {
 	["reload"] = "reload",
 	["reload_empty"] = "reload_empty",
 }
---SWEP.ReloadHold = nil
+
 SWEP.FakeVPShouldUseHand = false
 
 SWEP.FakeViewBobBone = "Camera_animated"

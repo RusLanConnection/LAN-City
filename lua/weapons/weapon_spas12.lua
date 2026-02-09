@@ -17,13 +17,13 @@ SWEP.WorldModelFake = "models/weapons/arccw/c_ur_spas12.mdl" -- ОЧЕНЬ ст�
 --uncomment for funny
 SWEP.FakePos = Vector(-10, 4.15, 3.85)
 SWEP.FakeAng = Angle(0.2, 0, 1)
-//SWEP.MagIndex = 41
+
 SWEP.FakeAttachment = "1"
 SWEP.AttachmentPos = Vector(0.4,0.5,0)
 SWEP.AttachmentAng = Angle(0,0,0)
 SWEP.FakeBodyGroups = "000000002"
 //SWEP.MagIndex = 6
-//MagazineSwap
+
 --Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeEjectBrassATT = "2"
 SWEP.FakeViewBobBone = "CAM_Homefield"
@@ -32,16 +32,16 @@ SWEP.FakeReloadSounds = {
 	[0.34] = "weapons/ak74/ak74_magout_rattle.wav",
 	[0.85] = "weapons/ak74/ak74_magin.wav",
 	[0.95] = "weapons/universal/uni_crawl_l_05.wav",
-	--[0.95] = "weapons/ak74/ak74_boltback.wav"
+
 }
 
 SWEP.FakeEmptyReloadSounds = {
-	--[0.22] = "weapons/ak74/ak74_magrelease.wav",
+
 	[0.25] = "weapons/ak74/ak74_magout.wav",
 	[0.34] = "weapons/ak74/ak74_magout_rattle.wav",
 	[0.65] = "weapons/ak74/ak74_magin.wav",
 	[0.75] = "weapons/universal/uni_crawl_l_05.wav",
-	--[0.95] = "weapons/ak74/ak74_boltback.wav",
+
 	[0.91] = "weapons/ak74/ak74_boltback.wav",
 	[0.96] = "weapons/ak74/ak74_boltrelease.wav",
 }
@@ -269,8 +269,7 @@ local function reloadFunc(self)
 			reloadFunc(self)
 			return
 		end
-		--self:GetOwner():ChatPrint(tostring(self.drawBullet))
-		--self:PlaySnd(self.CockSound or "weapons/shotgun/shotgun_cock.wav",true,CHAN_AUTO)
+
 		if !self.drawBullet then
 			
 			self:PlayAnim(self.AnimList["finish_empty"] or "sgreload_finish_empty", 1,false,function(self)  

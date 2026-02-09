@@ -16,7 +16,7 @@ SWEP.FakeAng = Angle(0, 0, 0)
 SWEP.AttachmentPos = Vector(0.05,-0.3,0)
 SWEP.AttachmentAng = Angle(90,0,0)
 SWEP.FakeMagDropBone = 48
-//MagazineSwap
+
 --PrintAnims(Entity(1):GetActiveWeapon():GetWM())
 SWEP.FakeVPShouldUseHand = true
 SWEP.AnimList = {

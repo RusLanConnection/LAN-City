@@ -3,7 +3,7 @@ SWEP.Spawnable = true
 SWEP.AdminOnly = false
 SWEP.PrintName = "TOZ-106"
 SWEP.Author = "Tulsky Oruzheiny Zavod"
-SWEP.Instructions = "Bolt-action shotgun"
+SWEP.Instructions = "Bolt-action shotgun chambered in 20/70"
 SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
@@ -93,13 +93,9 @@ if CLIENT then
 		end,
 		[0.6] = function( self, timeMul )
 			if self:Clip1() < 1 then
-				//self:GetOwner():PullLHTowards()
+
 				self:GetWM():ManipulateBoneScale(67, vector_full)
-			else
-				//self:GetWM():ManipulateBoneScale(75, vector_full)
-				//self:GetWM():ManipulateBoneScale(76, vector_full)
-				//self:GetWM():ManipulateBoneScale(77, vector_full)
-			end 
+			end
 		end,
 	}
 end
@@ -264,7 +260,7 @@ local function cock(self,time)
 	net.Broadcast()
 
 	self.Primary.Next = CurTime() + self.AnimDraw + self.Primary.Wait
-	--if CLIENT then self:PlaySnd(self.CockSound or "snd_jack_hmcd_boltcycle.wav",true,CHAN_AUTO) end
+	
 
 	local ply = self:GetOwner()
 
