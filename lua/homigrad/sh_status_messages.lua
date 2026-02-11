@@ -314,8 +314,8 @@ function hg.likely_to_phrase(ply)
 		or (blood < 3000 and 0.3)
 		or (fear > 0.5 and 0.7)
 		or (brain > 0.1 and brain * 5)
-		or (fear < -0.5 and 0.01)
-		or (hungry > 15 and hungry * 0.01)
+		--or (fear < -0.5 and 0.1)
+		or (hungry > 15 and hungry * 0.05)
 		or -0.1
 end
 

@@ -214,7 +214,7 @@ module[2] = function(owner, org, mulTime)
 		org.incapacitated = false
 	end
 
-	if (org.brain > 0.4) or (org.heart > 0.6) or (org.trachea >= 0.6) or (org.blood < 1500) then
+	if (org.brain > 0.4) or (org.heart > 0.6) or (org.trachea >= 0.6) --[[or (org.blood < 1500 and org.otrub)]] then
 		org.critical = true
 	else
 		org.critical = false
