@@ -11,15 +11,30 @@ module[1] = function(org)
 end
 
 local colorRed = Color(125,25,25)
+
+local hungry_a_bit = {
+    "Mgh, I'm hungry...",
+    "Some food would be great...",
+    "I'm hungry...",
+    "It's time to eat",
+}
+
+--[[local very_hungry = {
+    "My stomach... Ugh...",
+    "If I don't eat, I'll feel even worse...",
+    "Stomach... Damn it... I feel sick",
+}]]
+
 module[2] = function(owner, org, timeValue)
     if org.satiety <= 0 and hg_hungersystem:GetBool() and ((engine.ActiveGamemode() == "zcity" and CurrentRound().name == "hmcd") or engine.ActiveGamemode() == "sandbox") then 
-        org.hungry = min(max(org.hungry + timeValue * 0.01, 0),100)
-        //if org.isPly and not org.otrub and org.hungry > 25 and org.hungry < 45 then org.owner:Notify(table.Random(pharse),60,"hungry",6) end
+        org.hungry = min(max(org.hungry + timeValue * 0.4, 0),100)
+        --org.owner:ChatPrint(org.hungry)
+        if org.isPly and not org.otrub and org.hungry > 25 and org.hungry < 45 then org.owner:Notify(table.Random(hungry_a_bit),60,"hungry",6) end
         org.hungryDmgCd = org.hungryDmgCd or 0
         if org.alive and org.hungryDmgCd < CurTime() and org.hungry > 45 then
-            //org.owner:Notify(table.Random(veryPharse),20,"hungry",6,nil,colorRed)
-            org.painadd = org.painadd + 25 * (org.hungry/45)
-            org.hungryDmgCd = CurTime() + (math.random(40,55) - (org.hungry/5.5))
+            --org.owner:Notify(table.Random(veryPharse),20,"hungry",6,nil,colorRed)
+            org.painadd = org.painadd + 25 --* (org.hungry/45)
+            org.hungryDmgCd = CurTime() + (math.random(20,30) --[[- (org.hungry/5.5)]])
             //owner:TakeDamage(5,owner,owner)
             if org.hungry > 80 then
                 org.stomach = math.min(org.stomach + 0.1,1)
@@ -49,6 +64,7 @@ module[2] = function(owner, org, timeValue)
     if org.satiety == 0 then return end
 
     org.satiety = min(max(org.satiety - timeValue * 0.5, 0), 100)
+    --org.owner:ChatPrint(org.satiety)
     org.blood = min(org.blood + timeValue * (org.satiety/10) , 5000)
     org.regeneratehp = (!((org.regeneratehp or 0) >= 1) and min( (org.regeneratehp or 0) + timeValue * (org.satiety/100), 1)) or 0
     owner:SetHealth(min(owner:Health() + org.regeneratehp,100))

@@ -252,16 +252,16 @@ input_list.jaw = function(org, bone, dmg, dmgInfo, boneindex, dir, hit, ricochet
 	local dislocated = (org.jaw - oldDmg) > math.Rand(0.1, 0.3)
 
 	if org.jaw == 1 then
-		org.shock = org.shock + dmg * 40
+		org.shock = org.shock + dmg * 5
 		org.avgpain = org.avgpain + dmg * 30
 
 		if oldDmg != 1 then org.owner:EmitSound("bones/bone"..math.random(8)..".mp3", 75, 100, 1, CHAN_AUTO) end
 	end
 
-	org.shock = org.shock + dmg * 3
+	org.shock = org.shock + dmg * 1.5
 
 	if dislocated then
-		org.shock = org.shock + dmg * 20
+		org.shock = org.shock + dmg * 2
 		org.avgpain = org.avgpain + dmg * 20
 		
 		if !org.jawdislocation then
@@ -296,7 +296,7 @@ input_list.skull = function(org, bone, dmg, dmgInfo, boneindex, dir, hit, ricoch
 	hg.AddHarmToAttacker(dmgInfo, (org.skull - oldDmg) * 4, "Skull bone damage harm")
 
 	if org.skull == 1 then
-		org.shock = org.shock + dmg * 40
+		org.shock = org.shock + dmg * 20
 		org.avgpain = org.avgpain + dmg * 30
 
 		if oldDmg != 1 then org.owner:EmitSound("bones/bone"..math.random(8)..".mp3", 75, 100, 1, CHAN_AUTO) end

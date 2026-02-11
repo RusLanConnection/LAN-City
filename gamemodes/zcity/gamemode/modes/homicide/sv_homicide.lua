@@ -672,7 +672,7 @@ function MODE:Intermission()
 	local traitors_needed = 1
 	
 	--if(MODE.ShouldStartRoleRound())then
-		traitors_needed = 2--math.ceil(player_count / 6) ПОТОМ УБРАТЬ
+		traitors_needed = math.ceil(player_count / 6)
 		
 		if player_count >= 7 and player_count < 10 then
 			traitors_needed = 2

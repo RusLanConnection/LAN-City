@@ -302,15 +302,17 @@ function hg.likely_to_phrase(ply)
 	local fear = org.fear
 	local temperature = org.temperature
 	local broken_dislocated = org.just_damaged_bone and ((org.just_damaged_bone - CurTime()) < -3)
+	local hungry = org.hungry
 
 	return (broken_dislocated) and 5
 		or (pain > 65) and 5
 		or (temperature < 31 and 0.5)
 		or (temperature > 38 and 0.5)
 		or (blood < 3000 and 0.3)
-		--or (fear > 0.5 and 0.7)
+		or (fear > 0.5 and 0.7)
 		or (brain > 0.1 and brain * 5)
-		or (fear < -0.5 and 0.05)
+		or (fear < -0.5 and 0.1)
+		or (hungry > 15 and hungry * 0.05)
 		or -0.1
 end
 
@@ -363,7 +365,7 @@ local function get_status_message(ply)
 		most_wanted_phraselist = temperature < 40 and hot_phraselist or heatstroke_phraselist
 	end
 
-	if not most_wanted_phraselist and hungry and hungry > 25 and math.random(3) == 1 then
+	if not most_wanted_phraselist and hungry and hungry > 15 --[[and math.random(2) == 1]] then
 		most_wanted_phraselist = hungry > 45 and very_hungry or hungry_a_bit
 	end
 
@@ -392,13 +394,13 @@ local function get_status_message(ply)
 	elseif after_unconscious_notify then
 		most_wanted_phraselist = after_unconscious
 	elseif hg.nothing_happening(ply) then
-		//most_wanted_phraselist = random_phrase
+		most_wanted_phraselist = random_phrase
 
-		if hungry and hungry > 25 and math.random(5) == 1 then
+		--[[if hungry and hungry > 25 and math.random(5) == 1 then
 			most_wanted_phraselist = hungry > 45 and very_hungry or hungry_a_bit
-		end
-	--elseif hg.fearful(ply) then
-		--most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
+		end]]
+	elseif hg.fearful(ply) then
+		most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
 	end
 
 	if brain > 0.1 then

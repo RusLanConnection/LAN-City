@@ -24,7 +24,7 @@ input_list.heart = function(org, bone, dmg, dmgInfo)
 
 	hg.AddHarmToAttacker(dmgInfo, (org.heart - oldDmg) * 10, "Heart damage harm")
 	
-	org.shock = org.shock + dmg * 20
+	org.shock = org.shock + dmg --* 20
 	org.internalBleed = org.internalBleed + (org.heart - oldDmg) * 10
 
 	return result
