@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/pwb/weapons/w_saiga_12.mdl"
+SWEP.WorldModel = "models/weapons/w_rif_m4a1.mdl"
 SWEP.WorldModelFake = "models/weapons/arc9_fas/shotguns/saiga.mdl"
 //PrintAnims(Entity(1):GetActiveWeapon():GetWM())
 --uncomment for funny
@@ -22,9 +22,7 @@ SWEP.MagIndex = 41
 SWEP.FakeScale = 0.79
 
 //SWEP.ZoomPos = Vector(-5, -0.2, 10)
-//SWEP.MagIndex = 6
 
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeViewBobBone = "CAM_Homefield"
 SWEP.FakeReloadSounds = {
 	[0.35] = "weapons/ak74/ak74_magout.wav",

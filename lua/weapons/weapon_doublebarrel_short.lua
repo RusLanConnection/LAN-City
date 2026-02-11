@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/tfa_ins2/w_doublebarrel_sawnoff.mdl"
+SWEP.WorldModel = "models/weapons/w_shot_m3super90.mdl"
 
 SWEP.WepSelectIcon2 = Material("entities/tfa_ins2_doublebarrel_sawnoff.png")
 SWEP.WepSelectIcon2box = true

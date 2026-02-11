@@ -8,9 +8,9 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/pwb/weapons/w_m590a1.mdl"
+SWEP.WorldModel = "models/weapons/w_shot_m3super90.mdl"
 SWEP.WorldModelFake = "models/weapons/zcity/c_m590.mdl"
-//SWEP.FakeScale = 1.5
+
 
 SWEP.FakePos = Vector(-6, 2, 7.5)
 SWEP.FakeAng = Angle(0, 0, 0)
@@ -18,9 +18,7 @@ SWEP.FakeAng = Angle(0, 0, 0)
 SWEP.FakeAttachment = "muzzle"
 SWEP.AttachmentPos = Vector(2,0,0)
 SWEP.AttachmentAng = Angle(0,0,0)
-//SWEP.MagIndex = 6
 
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeReloadSounds = {
 	[0.25] = "weapons/ak74/ak74_magout.wav",
 	[0.34] = "weapons/ak74/ak74_magout_rattle.wav",

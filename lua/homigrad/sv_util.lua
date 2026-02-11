@@ -486,14 +486,15 @@ hook.Add("PostEntityFireBullets","bulletsuppression",function(ent,bullet)
 
 		if dist > 120 then continue end
 
-		if shooterdist < 500 and !IsLookingAt(ent:GetOwner(),eyePos) then continue end
+		if shooterdist < 200 and !IsLookingAt(ent:GetOwner(),eyePos) then continue end
 
 		if ent:GetOwner():IsPlayer() then
 			hg.DynaMusic:AddPanic(ent:GetOwner(),0.5)
 		end
 
 		if !org.otrub then
-			ent:AddNaturalAdrenaline(0.05 * dmg / math.max(dist / 2,10) / 1)
+			--print(1 * dmg / math.max(dist / 2,10) / 1)
+			ply:AddNaturalAdrenaline(0.05 * dmg / math.max(dist / 2,10) / 1)
 			org.fearadd = org.fearadd + 0.2
 		end
 	end
@@ -693,41 +694,61 @@ function hgWreckBuildings(blaster, pos, power, range, ignoreVisChecks) -- taken 
 	local masMassToLoosen = 30 * power
 	local allProps = ents.FindInSphere(pos, maxRange)
 
-	for k, prop in pairs(allProps) do
-		if not (table.HasValue(WreckBlacklist, prop:GetClass()) or hook.Run("hg_CanDestroyProp", prop, blaster, pos, power, range, ignore) == false or prop.ExplProof == true) then
-			local physObj = prop:GetPhysicsObject()
-			local propPos = prop:LocalToWorld(prop:OBBCenter())
-			local DistFrac = 1 - propPos:Distance(pos) / maxRange
-			local myDestroyThreshold = DistFrac * maxMassToDestroy
-			local myLoosenThreshold = DistFrac * masMassToLoosen
+	local co = coroutine.create(function()
 
-			if DistFrac >= .85 then
-				myDestroyThreshold = myDestroyThreshold * 7
-				myLoosenThreshold = myLoosenThreshold * 7
-			end
+		local LastProcess = SysTime()
 
-			if (prop ~= blaster) and physObj:IsValid() then
-				local mass, proceed = physObj:GetMass(), ignoreVisChecks
+		for k, prop in ipairs(allProps) do
+			LastProcess = SysTime()
+			if not (table.HasValue(WreckBlacklist, prop:GetClass()) or hook.Run("hg_CanDestroyProp", prop, blaster, pos, power, range, ignore) == false or prop.ExplProof == true) then
+				local physObj = prop:GetPhysicsObject()
+				local propPos = prop:LocalToWorld(prop:OBBCenter())
+				local DistFrac = 1 - propPos:Distance(pos) / maxRange
+				local myDestroyThreshold = DistFrac * maxMassToDestroy
+				local myLoosenThreshold = DistFrac * masMassToLoosen
 
-				if not proceed then
-					local tr = util.QuickTrace(pos, propPos - pos, blaster)
-					proceed = IsValid(tr.Entity) and (tr.Entity == prop)
+				if DistFrac >= .85 then
+					myDestroyThreshold = myDestroyThreshold * 7
+					myLoosenThreshold = myLoosenThreshold * 7
 				end
 
-				if proceed then
-					if mass <= myDestroyThreshold then
-						SafeRemoveEntity(prop)
-					elseif mass <= myLoosenThreshold then
-						physObj:EnableMotion(true)
-						constraint.RemoveAll(prop)
-						physObj:ApplyForceOffset((propPos - pos):GetNormalized() * 1000 * DistFrac * power * mass, propPos + VectorRand() * 10)
-					else
-						physObj:ApplyForceOffset((propPos - pos):GetNormalized() * 200 * DistFrac * origPower * mass, propPos + VectorRand() * 10)
+				if (prop ~= blaster) and physObj:IsValid() then
+					local mass, proceed = physObj:GetMass(), ignoreVisChecks
+
+					if not proceed then
+						local tr = util.QuickTrace(pos, propPos - pos, blaster)
+						proceed = IsValid(tr.Entity) and (tr.Entity == prop)
+					end
+
+					if proceed then
+						if mass <= myDestroyThreshold then
+							SafeRemoveEntity(prop)
+						elseif mass <= myLoosenThreshold then
+							physObj:EnableMotion(true)
+							constraint.RemoveAll(prop)
+							physObj:ApplyForceOffset((propPos - pos):GetNormalized() * 200 * DistFrac * power * mass, propPos + VectorRand() * 10)
+						else
+							physObj:ApplyForceOffset((propPos - pos):GetNormalized() * 200 * DistFrac * origPower * mass, propPos + VectorRand() * 10)
+						end
 					end
 				end
 			end
+
+			LastProcess = SysTime() - LastProcess
+
+			if LastProcess > 0.001 then
+				coroutine.yield()
+			end
 		end
-	end
+	end)
+	local index = blaster:EntIndex()
+	timer.Create("ProcessCheck_" .. index, 0, 0, function()
+		if coroutine.status( co ) == "dead" then
+			timer.Remove("ProcessCheck_" .. index)
+		end
+		--print("Yes yelid", coroutine.status( co ))
+		coroutine.resume(co)
+	end)
 end
 
 function hgIsDoor(ent)
@@ -1052,7 +1073,7 @@ if util.IsBinaryModuleInstalled("eightbit") then
 	require("eightbit")
 
 	if eightbit.SetDamp1 then
-		eightbit.SetDamp1(0.96)
+		eightbit.SetDamp1(0.85)
 	end
 
 	if eightbit.SetProotCutoff then
@@ -1541,7 +1562,7 @@ hook.Add("Org Think", "BodyTemperature", function(owner, org, timeValue) -- пе
 	local currentPulse = org.pulse or 70
 	local pulseHeat = 0
 	local temp = hg.MapTemps[game.GetMap()] or 20
-	
+
 	if currentPulse > 80 then
 		local pulseMultiplier = math.min((currentPulse - 70) / 100, 1.2)
 		pulseHeat = timeValue / 50 * pulseMultiplier * 0.2
@@ -1551,7 +1572,7 @@ hook.Add("Org Think", "BodyTemperature", function(owner, org, timeValue) -- пе
 	local ownerpos = owner:GetPos()
 	for i, ent in ipairs(ents.FindInSphere(ownerpos, 300)) do
 		local warmingent = warmingEnts[ent:GetClass()]
-		if warmingent then
+		if warmingent and !ent:GetNoDraw() then
 			--org.temperature = org.temperature + timeValue * (warmingEnts[ent:GetClass()] / 50 * (1 - ent:GetPos():Distance(owner:GetPos()) / 200))
 			warming = warming + (isfunction(warmingent) and warmingent(ent) or warmingent)
 		end

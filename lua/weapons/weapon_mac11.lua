@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Machine-Pistols"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/pwb2/weapons/w_mac11.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_mac10.mdl"
 SWEP.WorldModelFake = "models/weapons/tfa/zmirli/c_mac10.mdl"
 
 SWEP.FakePos = Vector(-9, 3.15, 9.09)
@@ -18,7 +18,7 @@ SWEP.AttachmentAng = Angle(0,0,90)
 
 
 SWEP.FakeAttachment = "1"
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
+
 
 SWEP.FakeReloadSounds = {
 	[0.22] = "weapons/universal/uni_crawl_l_03.wav",

@@ -1122,7 +1122,7 @@ hook.Add("EntityTakeDamage", "homigrad-damage", function(ent, dmgInfo)
 end)
 
 hook.Add("CanEquipArmor", "HeadcrabArmorCD", function(ply, armor_name)
-	if IsValid(ply) and (ply.ArmorCD or 0) > CurTime() then
+	if IsValid(ply) and ((ply.ArmorCD or 0) > CurTime() or ply:GetNetVar("headcrab")) then
 		return false
 	end
 end)

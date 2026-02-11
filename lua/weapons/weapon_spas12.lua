@@ -9,9 +9,9 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/tfa_ins2/w_spas12_bri.mdl"
-SWEP.WorldModelFake = "models/weapons/arccw/c_ur_spas12.mdl" -- ОЧЕНЬ странная проблема с модельками глеба, работать начинают только если ты включишь камеру на игрока, возможно проблема в рендероверайде...
-//SWEP.FakeScale = 1.5
+SWEP.WorldModel = "models/weapons/w_shotgun.mdl"
+SWEP.WorldModelFake = "models/weapons/arccw/c_ur_spas12.mdl"
+
 --PrintAnims(Entity(1):GetActiveWeapon():GetWM())
 --PrintTable(Entity(1):GetActiveWeapon():GetWM():GetAttachments())
 --uncomment for funny
@@ -22,9 +22,7 @@ SWEP.FakeAttachment = "1"
 SWEP.AttachmentPos = Vector(0.4,0.5,0)
 SWEP.AttachmentAng = Angle(0,0,0)
 SWEP.FakeBodyGroups = "000000002"
-//SWEP.MagIndex = 6
 
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeEjectBrassATT = "2"
 SWEP.FakeViewBobBone = "CAM_Homefield"
 SWEP.FakeReloadSounds = {

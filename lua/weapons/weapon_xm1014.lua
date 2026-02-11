@@ -9,12 +9,12 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/tfa_ins2/w_m1014.mdl"
+SWEP.WorldModel = "models/weapons/w_shot_xm1014.mdl"
 SWEP.ReloadSound = "weapons/tfa_ins2/m1014/toz_shell_insert_2.wav"
 SWEP.WepSelectIcon2 = Material("pwb/sprites/xm1014.png")
 SWEP.IconOverride = "entities/weapon_pwb_xm1014.png"
-SWEP.WorldModelFake = "models/weapons/arccw/c_ud_m1014.mdl" -- ОЧЕНЬ странная проблема с модельками глеба, работать начинают только если ты включишь камеру на игрока, возможно проблема в рендероверайде...
-//SWEP.FakeScale = 1.5
+SWEP.WorldModelFake = "models/weapons/arccw/c_ud_m1014.mdl"
+
 --PrintAnims(Entity(1):GetActiveWeapon():GetWM())
 --PrintTable(Entity(1):GetActiveWeapon():GetWM():GetAttachments())
 --uncomment for funny
@@ -25,9 +25,7 @@ SWEP.FakeAttachment = "1"
 SWEP.AttachmentPos = Vector(-5,-0.05,0.7)
 SWEP.AttachmentAng = Angle(0,0,-90)
 SWEP.FakeBodyGroups = "000000002"
-//SWEP.MagIndex = 6
 
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeEjectBrassATT = "2"
 SWEP.FakeViewBobBone = "CAM_Homefield"
 SWEP.FakeReloadSounds = {

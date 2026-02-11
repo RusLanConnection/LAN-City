@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Assault Rifles"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/arccw/w_irifle.mdl"
+SWEP.WorldModel = "models/weapons/w_irifle.mdl"
 SWEP.WorldModelFake = "models/weapons/arccw/c_irifle.mdl"
 
 SWEP.FakePos = Vector(26, -5.9, 8.8)
@@ -54,10 +54,7 @@ if CLIENT then
 				hg.CreateMag( self, Vector(0,0,-15) )
 				self:GetWM():ManipulateBoneScale(1, vecPochtiZero)
 				self:GetOwner():PullLHTowards("ValveBiped.Bip01_Spine2", 0.8 * timeMul)
-			else
-				//self:GetWM():ManipulateBoneScale(75, vecPochtiZero)
-				//self:GetWM():ManipulateBoneScale(76, vecPochtiZero)
-				//self:GetWM():ManipulateBoneScale(77, vecPochtiZero)
+
 			end 
 		end,
 		[0.6] = function( self, timeMul )

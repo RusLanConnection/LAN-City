@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Assault Rifles"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/tfa_ins2/akpack/w_ak74.mdl"
+SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
 SWEP.WorldModelFake = "models/weapons/arccw/c_ur_ak.mdl"
 
 SWEP.FakePos = Vector(-11, 2.53, 5.3)
@@ -97,6 +97,20 @@ if CLIENT then
 			self:GetWM():ManipulateBoneScale(58, vector_origin)
 		end
 	}
+end
+
+SWEP.settedGroups = false
+function SWEP:ThinkAdd()
+	if CLIENT and self:GetWM() and not isbool(self:GetWM()) and isstring(self.FakeBodyGroups) then
+		if self:HasAttachment("grip", "grip_akdong") then
+			self:GetWM():SetBodyGroups("02900080302")
+			self.settedGroups = true
+		else
+			self:GetWM():SetBodyGroups(self.FakeBodyGroups)
+			self.settedGroups = true
+		end
+		--self:GetWM():SetBodyGroups(self.FakeBodyGroups)
+	end
 end
 
 function SWEP:ModelCreated(model)
@@ -205,7 +219,7 @@ SWEP.availableAttachments = {
 	},
 	grip = {
 		["mount"] = Vector(-16.2,-0.1,-0.2),
-		["mountType"] = "ak74"
+		["mountType"] = {"ak74"}
 	},
 	underbarrel = {
 		["mount"] = {["ak74"] = Vector(0,0,0)},

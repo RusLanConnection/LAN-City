@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Assault Rifles"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/zcity/akpack/w_akm.mdl"
+SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
 SWEP.WorldModelFake = "models/weapons/arccw/c_ur_ak.mdl"
 
 SWEP.FakePos = Vector(-12, 2.52, 5.5)

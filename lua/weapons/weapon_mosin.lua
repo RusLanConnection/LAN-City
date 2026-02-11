@@ -1,24 +1,23 @@
--- каряк сделан барой.. пулл реквест до того как стал известен
 SWEP.Base = "weapon_m4super"
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
-SWEP.PrintName = "Karabiner 98k"
-SWEP.Author = "Mauser"
-SWEP.Instructions = "Sniper rifle chambered in 7.62x51"
+SWEP.PrintName = "Mosin-Nagant M38"
+SWEP.Author = "Izhevsk Machine-Building Plant"
+SWEP.Instructions = "Bolt-action rifle chambered in 7.62x54 mm"
 SWEP.Category = "Weapons - Sniper Rifles"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/w_snip_awp.mdl"
-SWEP.WorldModelFake = "models/weapons/tfa_ins2/c_k98.mdl"
-SWEP.FakeScale = 0.9
+SWEP.WorldModel = "models/weapons/w_snip_scout.mdl"
+SWEP.WorldModelFake = "models/weapons/zcity/c_mosin.mdl"
+SWEP.FakeScale = 1
 
-SWEP.FakePos = Vector(-7, 3.6, 5.1)
+SWEP.FakePos = Vector(-6, 2.7, 6)
 SWEP.FakeAng = Angle(0, 0, 0)
 
-SWEP.FakeAttachment = "1"
-SWEP.AttachmentPos = Vector(-8.5,0,0)
-SWEP.AttachmentAng = Angle(0,0,0)
+SWEP.FakeAttachment = "muzzle"
+SWEP.AttachmentPos = Vector(-0.1,-0.3,2)
+SWEP.AttachmentAng = Angle(90,0,0)
 SWEP.FakeBodyGroups = "000000000"
 SWEP.BarrelLength = 40
 SWEP.SUPBarrelLenght = 47
@@ -32,14 +31,15 @@ SWEP.ViewPunchDiv = 30
 
 SWEP.FakeVPShouldUseHand = false
 
-SWEP.WepSelectIcon2 = Material("vgui/wep_jack_hmcd_rifle")
-SWEP.IconOverride = "vgui/wep_jack_hmcd_rifle"
+SWEP.WepSelectIcon2 = Material("vgui/hud/tfa_ins2_i_mosin")
+SWEP.WepSelectIcon2box = false
+SWEP.IconOverride = "entities/arc9_eft_mosin_infantry.png"
 
-SWEP.LocalMuzzlePos = Vector(36.739, -0.25, 4)
-SWEP.LocalMuzzleAng = Angle(0.4,-0.0,0)
+SWEP.LocalMuzzlePos = Vector(27, 0.5, 4)
+SWEP.LocalMuzzleAng = Angle(.3,0,0)
 SWEP.WeaponEyeAngles = Angle(-0.7,0.1,0)
 
-SWEP.CustomShell = "762x51"
+SWEP.CustomShell = "762x54"
 
 SWEP.ReloadSound = "weapons/tfa_ins2/k98/m40a1_boltlatch.wav"
 SWEP.CockSound = "weapons/tfa_ins2/k98/m40a1_boltlatch.wav"
@@ -53,29 +53,31 @@ SWEP.UseCustomWorldModel = false
 SWEP.Primary.ClipSize = 5
 SWEP.Primary.DefaultClip = 5
 SWEP.Primary.Automatic = false
-SWEP.Primary.Ammo = "7.62x51 mm"
+SWEP.Primary.Ammo = "7.62x54 mm"
 SWEP.Primary.Cone = 0
 SWEP.Primary.Spread = 0
 SWEP.Primary.Sound = {"weapons/tfa_ins2/k98/m40a1_fp.wav", 80, 90, 100}
 SWEP.SupressedSound = {"mosin/mosin_suppressed_fp.wav", 80, 90, 100}
 SWEP.availableAttachments = {
 	barrel = {
-		[1] = {"supressor7", Vector(9,0,0), {}},
+		[1] = {"supressor1", Vector(-4.7,1,0), {}},
+		[2] = {"supressor6", Vector(-2.2,1.3,0), {}},
+		[3] = {"supressor7", Vector(-3.7,0.4,0), {}},
 	},
 	sight = {
 		["mountType"] = "kar98mount",
-		["mount"] = Vector(-15, 2, 0),
+		["mount"] = Vector(-20, 5, 0.1),
 	},
 }
 
 SWEP.Primary.Wait = 0.25
-SWEP.NumBullet = 8
-SWEP.AnimShootMul = 3
-SWEP.AnimShootHandMul = 10
+SWEP.NumBullet = 1
+SWEP.AnimShootMul = 1
+SWEP.AnimShootHandMul = 1
 SWEP.DeploySnd = {"homigrad/weapons/draw_hmg.mp3", 55, 100, 110}
 SWEP.HolsterSnd = {"homigrad/weapons/hmg_holster.mp3", 55, 100, 110}
 SWEP.HoldType = "rpg"
-SWEP.ZoomPos = Vector(0, -0.25, 4.4)
+SWEP.ZoomPos = Vector(0, .65, 5.2)
 SWEP.RHandPos = Vector(0, 0, -1)
 SWEP.LHandPos = Vector(7, 0, -2)
 SWEP.Ergonomics = 0.9
@@ -88,52 +90,93 @@ SWEP.attAng = Angle(0, 0.2, 0)
 SWEP.lengthSub = 20
 
 SWEP.holsteredBone = "ValveBiped.Bip01_Spine2"
-SWEP.holsteredPos = Vector(0, 8, -8)
+SWEP.holsteredPos = Vector(9, 8, -8)
 SWEP.holsteredAng = Angle(210, 0, 180)
-
-
 
 SWEP.AnimList = {
 	["idle"] = "base_idle",
 	["reload"] = "base_Fire_end",
 	["reload_empty"] = "base_Fire_end",
-	["finish_empty"] = "Reload_End",
-	["finish"] = "Reload_End",
-	["insert"] = "Reload_Insert",
-	["start"] = "Reload_Start",
+	["finish_empty"] = "Base_Reload_End",
+	["finish"] = "Base_Reload_End",
+	["insert"] = "Base_Reload_Insert",
+	["start"] = "Base_Reload_Start",
 	["cycle"] = "base_Fire_end",
 }
+
 local math = math
 local math_random = math.random
+local vecfull = Vector(1,1,1)
+
+local function HideMag(model, unhide)
+	if !IsValid(model) then return end
+
+	local vec = unhide and vecfull or vector_origin
+
+	for i = 100, 106 do
+		model:ManipulateBoneScale(i, vec)
+	end
+end
+
+local function HideMag2(model, unhide)
+	if !IsValid(model) then return end
+
+	local vec = unhide and vecfull or vector_origin
+
+	model:ManipulateBoneScale(101, vec)
+end
+
+local function SetModelAmmo(model, self)
+	if !IsValid(model) then return end
+
+	model:SetBodygroup(1, math.Clamp(self:Clip1(), 0, self.Primary.ClipSize))
+end
+
+function SWEP:ModelCreated(model)
+	HideMag(model, false)
+	SetModelAmmo(model, self)
+end
+
 SWEP.AnimsEvents = {
-	["Reload_Start"] = {
+	["Base_Reload_Start"] = {
 		[0.3] = function(self)
+			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltback.wav", 45, math_random(95, 105))
+			HideMag2(self:GetWM(), true)
 		end,
 	},
-	["Reload_Insert"] = {
+	["Base_Reload_Insert"] = {
 		[0.1] = function(self)
+			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/mosin_bulletin_"..math_random(1,4)..".wav", 45, math_random(95, 105))
+			HideMag2(self:GetWM(), true)
 		end,
 	},
-	["Reload_End"] = {
+	["Base_Reload_End"] = {
 		[0.2] = function(self)
+			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltforward.wav", 45, math_random(95, 105))
+			HideMag2(self:GetWM(), false)
 		end,
 		[0.5] = function(self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltlatch.wav", 45, math_random(95, 105))
+			HideMag2(self:GetWM(), false)
 		end,
 	},
 	["base_Fire_end"] = {
 		[0.1] = function(self)
+			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltback.wav", 45, math_random(95, 105))
+			HideMag(self:GetWM(), true)
 		end,
 		[0.3] = function(self)
-			self:RejectShell(self.ShellEject)
+			--self:RejectShell(self.ShellEject)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltforward.wav", 45, math_random(95, 105))
 		end,
 		[0.5] = function(self)
+			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltlatch.wav", 45, math_random(95, 105))
+			HideMag(self:GetWM(), true)
 		end
 	}
 }
@@ -181,7 +224,7 @@ end
 
 local function cock(self,time)
 	if SERVER then
-		self:Draw(true, true)
+		self:Draw(true)
 	end
 
 	if self:Clip1() == 0 then
@@ -219,7 +262,7 @@ local function reloadFunc(self)
 		self:GetWM():ManipulateBoneScale(self.MagIndex, vector_full)
 	end
 
-	self:PlayAnim(self.AnimList["insert"] or "Reload_Insert", 1, false, function() 
+	self:PlayAnim(self.AnimList["insert"] or "reload_insert", 1, false, function() 
 		self:InsertAmmo(1) 
 		if self.MagIndex then
 			self:GetWM():ManipulateBoneScale(self.MagIndex, vector_origin)
@@ -235,9 +278,9 @@ local function reloadFunc(self)
 
 		if !self.drawBullet then
 			cock(self,1)
-			self:PlayAnim(self.AnimList["finish_empty"] or "base_Fire_end", 1, false, function(self) self:SetNetVar("shootgunReload", 0) end, false, true) 
+			self:PlayAnim(self.AnimList["finish_empty"] or "bolt_close_0", 1, false, function(self) self:SetNetVar("shootgunReload", 0) end, false, true) 
 		else
-			self:PlayAnim(self.AnimList["finish"] or "reload_end", 1, false, function(self) self:SetNetVar("shootgunReload", 0) end, false, true) 
+			self:PlayAnim(self.AnimList["finish"] or "bolt_close_0", 1, false, function(self) self:SetNetVar("shootgunReload", 0) end, false, true) 
 		end
 	end, false, true)
 end
@@ -257,7 +300,7 @@ function SWEP:Reload(time)
 	if self.drawBullet == false and SERVER then
 		cock(self,1.5)
 		self:SetNetVar("shootgunReload",CurTime() + 1.3)
-		self:PlayAnim(self.AnimList["cycle"] or "cycle", 1.5, false, nil, false, true)
+		self:PlayAnim(self.AnimList["cycle"] or "cycle_0", 1.5, false, nil, false, true)
 		return
 	end
 
@@ -265,7 +308,7 @@ function SWEP:Reload(time)
 
 	if SERVER then
 		self:SetNetVar("shootgunReload",CurTime() + 1.1)
-		self:PlayAnim(self.AnimList["start"] or "Reload_Start",1,false,function() 
+		self:PlayAnim(self.AnimList["start"] or "bolt_open_0",1,false,function() 
 			reloadFunc(self)
 		end,
 		false,true)

@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Machine-Pistols"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/zcity/w_tmp.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_tmp.mdl"
 SWEP.WorldModelFake = "models/weapons/c_ins2_warface_bt_mp9.mdl"
 
 SWEP.FakePos = Vector(-19.2, 2.89, 10.45)

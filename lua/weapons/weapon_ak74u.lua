@@ -8,7 +8,7 @@ SWEP.Category = "Weapons - Assault Rifles"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/zcity/akpack/w_aks74u.mdl"
+SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
 SWEP.ZoomPos = Vector(0, -0.0517, 5.1843)
 SWEP.WorldModelFake = "models/weapons/arccw/c_ur_ak.mdl"
 
@@ -205,12 +205,12 @@ SWEP.availableAttachments = {
 	barrel = {
 		[1] = {"supressor1", Vector(0,0,0), {}},
 		[2] = {"supressor8", Vector(0,0,0), {}},
-		["mount"] = Vector(-2.5,0.55,0.25),
+		["mount"] = Vector(-2.5,1,0.45),
 		["mountAngle"] = Angle(0,-1.5,0)
 	},
 	grip = {
 		["mount"] = Vector(-14.2,-0.1,-9),
-		["mountType"] = "ak74u"
+		["mountType"] = {"ak74"}
 	},
 }
 

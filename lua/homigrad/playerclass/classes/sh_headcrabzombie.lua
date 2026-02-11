@@ -48,7 +48,25 @@ CLASS.CanUseDefaultPhrase = false
 CLASS.CanEmitRNDSound = false
 CLASS.CanUseGestures = false
 
-local fallbackMat = "models/zombie_classic/zombie_classic_sheet"
+local fallbackMats = {
+	["Rebel"] = {
+		["main"] = "models/zombie_classic/zombie_classic_sheet",
+		["pants"] = "models/zombie_classic/zombie_classic_sheet",
+		["boots"] = "models/zombie_classic/zombie_classic_sheet",
+	},
+	["Metrocop"] = {
+		["main"] = "models/balaclava_hood/berd_diff_018_a_uni",
+		["pants"] = "models/humans/male/group02/lambda",
+		["boots"] = "models/humans/male/group01/formal"
+	},
+	["Combine"] = {
+		["main"] = "models/zombie_classic/combinesoldiersheet_zombie",
+		["pants"] = "models/gruchk_uwrist/css_seb_swat/swat/gear2",
+		["boots"] = "models/humans/male/group01/formal"
+	},
+}
+
+local clr_darkred = Color(75, 0, 0)
 function CLASS.On(self)
 	--\\ Remember old player cloth to set it later
 	local clothTbl = {}
@@ -81,15 +99,16 @@ function CLASS.On(self)
 		self:SetSubMaterial(0, fallbackMat)
 
 		if SERVER then
-			if not table.IsEmpty(clothTbl) and self.PreZombClass ~= "Rebel" then
+			if not table.IsEmpty(clothTbl) and not fallbackMats[self.PreZombClass] then
 				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/players_sheet"), hg.Appearance.Clothes[1][clothTbl["main"]])
 				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/pants"), hg.Appearance.Clothes[1][clothTbl["pants"]])
 				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/cross"), hg.Appearance.Clothes[1][clothTbl["boots"]])
 			else
-				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/players_sheet"), fallbackMat)
-				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/pants"), fallbackMat)
-				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/cross"), fallbackMat)
+				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/players_sheet"), fallbackMats[self.PreZombClass]["main"])
+				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/pants"), fallbackMats[self.PreZombClass]["pants"])
+				self:SetSubMaterial(self:GetSubMaterialIdByName("distac/gloves/cross"), fallbackMats[self.PreZombClass]["boots"])
 			end
+			self:SetPlayerColor(clr_darkred:ToVector())
 		end
 
 		self:SetSubMaterial(4, "")
@@ -106,9 +125,7 @@ function CLASS.On(self)
 			self.organism.painadd = -10
 		end
 
-		if IsValid(self) and not IsValid(self.FakeRagdoll) then
-			self:SetNetVar("headcrab", false)
-		end
+		self:SetNetVar("headcrab", false)
 
 		for k, v in ipairs(ents.FindByClass("npc_*")) do
 			if table.HasValue(rebels, v:GetClass()) or table.HasValue(combines, v:GetClass()) then
@@ -201,12 +218,6 @@ end
 function CLASS.Think(self)
     if CLIENT then return end
 
-	--\\ Remove headcrab because we already have one
-	-- We are doing it only when player isn't in ragdoll because we can't properly change playerclass model while he is in ragdoll..
-	if IsValid(self) and not IsValid(self.FakeRagdoll) then
-		self:SetNetVar("headcrab", false)
-	end
-
 	--\\ Remove armor
 	local armors = self:GetNetVar("Armor",{})
 	if armors["head"] and !hg.armor["head"][armors["head"]].nodrop then
@@ -230,63 +241,32 @@ function CLASS.Think(self)
 
 	--\\ Organism stuff
 	local org = self.organism
-	if org.bleed ~= 0 then
-		org.bleed = 0
-	end
-	if org.arteria ~= 0 then
-		org.arteria = 0
-	end
 
-	if org.stamina["max"] ~= 200 then
-		org.stamina["max"] = 200
-	end
-	if org.stamina["range"] ~= 200 then
-		org.stamina["range"] = 200
-	end
+	org.stamina["max"] = 200
+	org.stamina["range"] = 200
+
 	if org.otrub then
 		org.consciousness = 1
 		org.adrenalineAdd = 4
 		org.analgesia = 0.4
-		--org.needotrub = false
 	end
-	-- org.otrub = false
-	-- org.needotrub = false
-	-- org.incapacitated = false
-	-- org.critical = false
 
 	if org.pain >= 75 then
 		org.painadd = -10
 	end
 
-	if org.pulse <= 60 or org.o2["curregen"] <= 0.3 then
-		org.pulse = 100
-		org.o2["curregen"] = 2
-	end
+	org.pulse = 70
+	org.o2["curregen"] = 2
 
-	-- org.pain = 0
-	-- org.painadd = 0
-	-- org.shock = 0
-	-- org.hurt = 0
 	if org.consciousness <= 0.3 then
-		org.consciousness = 0.9
+		org.consciousness = 1
 		org.needotrub = false
 	end
 
-	if org.jawdislocation ~= false then
-		org.jawdislocation = false
-	end
-	if org.llegdislocation ~= false then
-		org.llegdislocation = false
-	end
-	if org.rlegdislocation ~= false then
-		org.rlegdislocation = false
-	end
-	if org.larmdislocation ~= false then
-		org.larmdislocation = false
-	end
-	if org.rarmdislocation ~= false then
-		org.rarmdislocation = false
-	end
+	org.jawdislocation = false
+	org.llegdislocation = false
+	org.rlegdislocation = false
+	org.rarmdislocation = false
 end
 
 --// Phrase stuff

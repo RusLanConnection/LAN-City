@@ -9,9 +9,9 @@ SWEP.Category = "Weapons - Shotguns"
 SWEP.Slot = 2
 SWEP.SlotPos = 10
 SWEP.ViewModel = ""
-SWEP.WorldModel = "models/weapons/zcity/w_shot_m3juper90.mdl"
-SWEP.WorldModelFake = "models/weapons/arccw/c_ud_870.mdl" -- ОЧЕНЬ странная проблема с модельками глеба, работать начинают только если ты включишь камеру на игрока, возможно проблема в рендероверайде...
-//SWEP.FakeScale = 1.5
+SWEP.WorldModel = "models/weapons/w_shot_m3super90.mdl"
+SWEP.WorldModelFake = "models/weapons/arccw/c_ud_870.mdl"
+
 
 SWEP.FakePos = Vector(-7, 3.6, 8.2)
 SWEP.FakeAng = Angle(0, 0.1, 2)
@@ -24,9 +24,7 @@ SWEP.FakeBodyGroups = "000000002"
 SWEP.FakeBodyGroupsPresets = {
 	"000000002",
 }
-//SWEP.MagIndex = 6
 
---Entity(1):GetActiveWeapon():GetWM():AddLayeredSequence(Entity(1):GetActiveWeapon():GetWM():LookupSequence("delta_foregrip"),1)
 SWEP.FakeReloadSounds = {
 	[0.25] = "weapons/ak74/ak74_magout.wav",
 	[0.34] = "weapons/ak74/ak74_magout_rattle.wav",
