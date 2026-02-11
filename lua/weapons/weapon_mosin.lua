@@ -12,8 +12,8 @@ SWEP.WorldModel = "models/weapons/w_snip_scout.mdl"
 SWEP.WorldModelFake = "models/weapons/zcity/c_mosin.mdl"
 SWEP.FakeScale = 1
 
-SWEP.FakePos = Vector(-6, 2.7, 6)
-SWEP.FakeAng = Angle(0, 0, 0)
+SWEP.FakePos = Vector(-7, 2.7, 6)
+SWEP.FakeAng = Angle(0.25, 0, 0)
 
 SWEP.FakeAttachment = "muzzle"
 SWEP.AttachmentPos = Vector(-0.1,-0.3,2)
@@ -77,7 +77,7 @@ SWEP.AnimShootHandMul = 1
 SWEP.DeploySnd = {"homigrad/weapons/draw_hmg.mp3", 55, 100, 110}
 SWEP.HolsterSnd = {"homigrad/weapons/hmg_holster.mp3", 55, 100, 110}
 SWEP.HoldType = "rpg"
-SWEP.ZoomPos = Vector(0, .65, 5.2)
+SWEP.ZoomPos = Vector(0, 0.6288, 4.8672)
 SWEP.RHandPos = Vector(0, 0, -1)
 SWEP.LHandPos = Vector(7, 0, -2)
 SWEP.Ergonomics = 0.9
@@ -167,7 +167,6 @@ SWEP.AnimsEvents = {
 		[0.1] = function(self)
 			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltback.wav", 45, math_random(95, 105))
-			HideMag(self:GetWM(), true)
 		end,
 		[0.3] = function(self)
 			--self:RejectShell(self.ShellEject)
@@ -176,7 +175,6 @@ SWEP.AnimsEvents = {
 		[0.5] = function(self)
 			SetModelAmmo(self:GetWM(), self)
 			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltlatch.wav", 45, math_random(95, 105))
-			HideMag(self:GetWM(), true)
 		end
 	}
 }
@@ -189,29 +187,6 @@ function SWEP:InitializePost()
 end
 
 function SWEP:AnimationPost()
-	local animpos = math.Clamp(self:GetAnimPos_Draw(CurTime()),0,1)
-	local sin = 1 - animpos
-	if sin >= 0.5 then
-		sin = 1 - sin
-	else
-		sin = sin * 1
-	end
-	sin = sin * 2
-	--sin = math.ease.InOutExpo(sin)
-	sin = math.ease.InOutSine(sin)
-
-	if sin > 0 then
-		self.LHPos[1] = 18 - sin * 6
-		self.RHPos[1] = 1 - sin * 4
-		self.inanim = true
-	else
-		self.inanim = nil
-	end
-
-	local wep = self:GetWeaponEntity()
-	if CLIENT and IsValid(wep) then
-		wep:ManipulateBonePosition(4,Vector(0,0,sin * -3),false)
-	end
 end
 
 function SWEP:GetAnimPos_Insert(time)
@@ -285,7 +260,7 @@ local function reloadFunc(self)
 	end, false, true)
 end
 
-SWEP.FakeEjectBrassATT = "2"
+SWEP.FakeEjectBrassATT = "shell"
 
 function SWEP:Reload(time)
 	--print(self:GetNetVar("shootgunReload",0))
