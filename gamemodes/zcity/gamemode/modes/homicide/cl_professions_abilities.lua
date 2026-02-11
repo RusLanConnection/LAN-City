@@ -105,7 +105,7 @@ hook.Add("PostDrawTranslucentRenderables", "HMCD_Professions_Abilities", functio
 		coroutine.resume(MODE.CoroutineFootStepsArrangement)
 	end
 
-	if(MODE.IsRoundTypeSuitableForProfessions() and LocalPlayer().Profession == "huntsman")then
+	if(MODE.IsRoundTypeSuitableForProfessions() and (LocalPlayer().Profession == "huntsman" or LocalPlayer().IsTraitor))then
 		local frame_time = FrameTime()
 		
 		if(LocalPlayer():Crouching())then
@@ -160,7 +160,7 @@ hook.Add("radialOptions", "EngineerCraft", function()
     local ply = LocalPlayer()
     local organism = ply.organism or {}
 
-    if ply:Alive() and not organism.otrub and ply.Profession == "engineer" then
+    if ply:Alive() and not organism.otrub and (ply.Profession == "engineer" or ply.isTraitor) then
 		-- pipe bomb
 		local have_ammo
 		local have_nails

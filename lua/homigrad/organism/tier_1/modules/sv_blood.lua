@@ -188,7 +188,7 @@ module[2] = function(owner, org, mulTime)
 		org.wantToVomit = org.wantToVomit + math.Rand(0, org.internalBleed / 1000 + org.pneumothorax / 200) * mulTime * 5
 		
 		if org.wantToVomit > 0.90 then
-			//owner:Notify(about_to_puke[math.random(#about_to_puke)], 15, "internalbleed_pre")
+			owner:Notify(about_to_puke[math.random(#about_to_puke)], 15, "internalbleed_pre")
 		end
 	end
 
@@ -214,7 +214,7 @@ module[2] = function(owner, org, mulTime)
 		org.incapacitated = false
 	end
 
-	if (org.brain > 0.4) or (org.heart > 0.6) or (org.trachea >= 0.6) then
+	if (org.brain > 0.4) or (org.heart > 0.6) or (org.trachea >= 0.6) or (org.blood < 1500) then
 		org.critical = true
 	else
 		org.critical = false

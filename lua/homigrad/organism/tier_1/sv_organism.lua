@@ -453,7 +453,7 @@ hook.Add("Org Think", "Main", function(owner, org, timeValue)
 	end
 
 	if org.brain < 0.4 then
-		local naturalHeal = org.thiamine > 0 and timeValue / 480 or timeValue / 1800
+		local naturalHeal = org.thiamine > 0 and timeValue / 300 or timeValue / 600
 		-- full heal in ~30 minutes (really fast tho) -- Ну не идет столько раунд даже в каких-нибудь скраперсах ну какой даун это придумал
 		-- 8 minutes with thiamine -- ДАЖЕ СТОЛЬКО НЕ ВСЕГДА ДЛИТСЯ
 
@@ -704,7 +704,7 @@ local function fixlimb(org, key, fixer)
 
 		org.owner:EmitSound("physics/flesh/flesh_impact_hard6.wav", 65)
 
-		if fixer == org.owner and (fixer.tries or 0) > 3 and math.random(3) == 1 then
+		if fixer == org.owner and (fixer.tries or 0) > 3 and math.random(2) == 1 then
 			fixer:Notify(finally_fixed[math.random(#finally_fixed)], 1, "dislocations_unlucky", 1, nil, Color(255, 255, 255, 255))
 		end
 
@@ -724,7 +724,7 @@ local function fixlimb(org, key, fixer)
 			hg.organism.input_list[key.."down"](org.owner.organism, 1, 6, dmgInfo, 0, vector_up)
 		end
 
-		if fixer == org.owner and fixer.tries > 3 and math.random(3) == 1 then
+		if fixer == org.owner and fixer.tries > 3 and math.random(2) == 1 then
 			fixer:Notify(unlucky_dislocations[math.random(#unlucky_dislocations)], 1, "dislocations_unlucky", 1, nil, Color(255, 255, 255, 255))
 		end
 	end

@@ -1,6 +1,6 @@
 ﻿if SERVER then AddCSLuaFile() end
 SWEP.Base = "weapon_hg_legacy_grenade"
-SWEP.PrintName = "M67"
+SWEP.PrintName = "M67 OLD"
 SWEP.Instructions = "M67 fragmentation grenade is used by many countries around the world since 1968. It has a pyrotechnic delay of 4-5.5 seconds."
 SWEP.Category = "Weapons - Explosive"
 SWEP.Spawnable = false
