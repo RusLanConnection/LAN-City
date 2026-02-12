@@ -46,7 +46,7 @@ local stomach_ache = {
 
 module[2] = function(owner, org, timeValue)
     if org.satiety <= 0 and hg_hungersystem:GetBool() and ((engine.ActiveGamemode() == "zcity" and CurrentRound().name == "hmcd") or engine.ActiveGamemode() == "sandbox") then 
-        org.hungry = min(max(org.hungry + timeValue * 0.25, 0),100)
+        org.hungry = min(max(org.hungry + timeValue * 0.2, 0),100)
         --org.owner:ChatPrint(org.hungry)
 
         if math.random(5) == 1 and org.isPly and not org.otrub and org.hungry > 25 and org.hungry < 45 then 
