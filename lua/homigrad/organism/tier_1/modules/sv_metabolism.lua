@@ -54,6 +54,7 @@ module[2] = function(owner, org, timeValue)
             org.owner:Notify(table.Random(org.stomach == 1 and hungry_but_stomach_dead or hungry_a_bit),60,"hungry",6) 
 
         end
+
         org.hungryDmgCd = org.hungryDmgCd or 0
         if org.alive and org.hungryDmgCd < CurTime() and org.hungry > 45 then
             --org.owner:Notify(table.Random(veryPharse),20,"hungry",6,nil,colorRed)
@@ -90,9 +91,9 @@ module[2] = function(owner, org, timeValue)
 
         org.wantToVomit = org.wantToVomit + 0.02
 
-        if math.random(3) == 1 and org.wantToVomit > 0.60 then
+        --[[if math.random(3) == 1 and org.wantToVomit > 0.60 then
 			owner:Notify(about_to_puke[math.random(#about_to_puke)], 15)
-		end
+		end]]
 
         if org.wantToVomit > 1 then
             org.satiety = 0

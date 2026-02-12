@@ -177,6 +177,31 @@ local very_hungry = {
     "Stomach... Damn it... I feel sick",
 }
 
+local very_very_hungry = {
+    "Please... please... just one bite...",
+    "God... anyone... I'm begging you... food...",
+    "Food.. It hurts... God, it hurts so much... please...",
+    "I'll do anything... anything... just give me food...",
+    "My insides are eating me alive... please...",
+    "I'd sell my soul for a piece of food right now...",
+    "Every breath burns... I'm so hungry it's killing me...",
+    "Is anyone there? I need... I need food...",
+    "My stomach is tearing itself apart... help me...",
+    "Please don't let me die hungry...",
+    "I just want to eat one more time... please...",
+    "This is how I die? Starving? Please no...",
+    "Hunger is killing me slowly and I feel every second...",
+    "Please... mother... anyone... I'm so hungry...",
+}
+
+local hungry_but_stomach_dead = {
+    "I'm starving... but I can't...",
+    "Food... No, I'll just tear myself apart...",
+    "The hunger is there, but the hole is bigger...",
+    "I smell food... But my stomach won't hold it...",
+    "Every swallow would be agony... And pointless...",
+}
+
 local after_unconscious = {
     "What happened? It hurts...",
 	"Where am I? Why does it hurt...",
@@ -315,7 +340,7 @@ function hg.likely_to_phrase(ply)
 		or (fear > 0.5 and 0.7)
 		or (brain > 0.1 and brain * 5)
 		--or (fear < -0.5 and 0.1)
-		or (hungry > 15 and hungry * 0.05)
+		or (hungry > 15 and hungry * 0.01)
 		or -0.1
 end
 
@@ -368,9 +393,9 @@ local function get_status_message(ply)
 		most_wanted_phraselist = temperature < 40 and hot_phraselist or heatstroke_phraselist
 	end
 
-	if not most_wanted_phraselist and hungry and hungry > 15 --[[and math.random(2) == 1]] then
+	--[[if not most_wanted_phraselist and hungry and hungry > 15 then
 		most_wanted_phraselist = hungry > 45 and very_hungry or hungry_a_bit
-	end
+	end]]
 
 	if (blood < 3100) or (pain > 75) or (broken_dislocated) or (broken_notify) or (dislocated_notify) then
 		if pain > 75 and (broken_dislocated) then
@@ -396,12 +421,18 @@ local function get_status_message(ply)
 		end
 	elseif after_unconscious_notify then
 		most_wanted_phraselist = after_unconscious
+	elseif hungry and hungry > 15 then
+
+		if hungry >= 80 then
+			most_wanted_phraselist = very_very_hungry
+		elseif hungry >= 45 then
+			most_wanted_phraselist = very_hungry
+		else
+			most_wanted_phraselist = org.stomach == 1 and hungry_but_stomach_dead or hungry_a_bit
+		end
+
 	elseif hg.nothing_happening(ply) then
 		most_wanted_phraselist = random_phrase
-
-		--[[if hungry and hungry > 25 and math.random(5) == 1 then
-			most_wanted_phraselist = hungry > 45 and very_hungry or hungry_a_bit
-		end]]
 	elseif hg.fearful(ply) then
 		most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
 	end

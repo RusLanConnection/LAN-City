@@ -188,9 +188,7 @@ module[2] = function(owner, org, mulTime)
 		org.wantToVomit = org.wantToVomit + math.Rand(0, org.internalBleed / 1000 + org.pneumothorax / 200) * mulTime * 5
 		
 		if org.wantToVomit > 0.90 then
-			if IsValid(owner) then
-				owner:Notify(about_to_puke[math.random(#about_to_puke)], 15, "internalbleed_pre")
-			end
+			owner:Notify(about_to_puke[math.random(#about_to_puke)], 15)
 		end
 	end
 
