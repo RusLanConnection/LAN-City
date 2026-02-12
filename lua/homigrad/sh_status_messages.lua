@@ -431,8 +431,8 @@ local function get_status_message(ply)
 			most_wanted_phraselist = org.stomach == 1 and hungry_but_stomach_dead or hungry_a_bit
 		end
 
-	elseif hg.nothing_happening(ply) then
-		most_wanted_phraselist = random_phrase
+	--[[elseif hg.nothing_happening(ply) then
+		most_wanted_phraselist = random_phrase]]
 	elseif hg.fearful(ply) then
 		most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
 	end
