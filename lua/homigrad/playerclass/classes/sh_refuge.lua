@@ -229,9 +229,9 @@ function CLASS.On(self, data)
 
     if isDefenseMode and isCommander then
         local specialModelChance = math.random(1, 1000000)
-        if specialModelChance == 1 then
+        --[[if specialModelChance == 1 then
             self:SetModel("models/dejtriyev/dreamybuss/prigozhin.mdl")
-        else
+        else]]
             local appearance = self.CurAppearance or hg.Appearance.GetRandomAppearance()
             appearance.AAttachments = ""
             appearance.AColthes = ""
@@ -254,7 +254,7 @@ function CLASS.On(self, data)
             self:SetBodygroup(8, math.random(0, 15))
             self:SetBodygroup(9, math.random(0, 9))
             self:SetSkin(math.random(0, 3))
-        end
+        --end
     end
 
     if not bNoEquipment and not isDefenseMode then

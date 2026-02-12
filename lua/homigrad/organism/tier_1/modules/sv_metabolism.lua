@@ -49,11 +49,11 @@ module[2] = function(owner, org, timeValue)
         org.hungry = min(max(org.hungry + timeValue * 0.2, 0),100)
         --org.owner:ChatPrint(org.hungry)
 
-        if math.random(5) == 1 and org.isPly and not org.otrub and org.hungry > 25 and org.hungry < 45 then 
+        --[[if math.random(5) == 1 and org.isPly and not org.otrub and org.hungry > 25 and org.hungry < 45 then 
 
             org.owner:Notify(table.Random(org.stomach == 1 and hungry_but_stomach_dead or hungry_a_bit),60,"hungry",6) 
 
-        end
+        end]]
 
         org.hungryDmgCd = org.hungryDmgCd or 0
         if org.alive and org.hungryDmgCd < CurTime() and org.hungry > 45 then

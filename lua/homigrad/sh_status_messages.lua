@@ -371,6 +371,7 @@ local function get_status_message(ply)
 	local temperature = org.temperature
 	local blood = org.blood
 	local hungry = org.hungry
+	local satiety = org.satiety
 	local broken_dislocated = org.just_damaged_bone and ((org.just_damaged_bone + 3 - CurTime()) < -3)
 
 	if broken_dislocated and org.just_damaged_bone then
@@ -421,7 +422,7 @@ local function get_status_message(ply)
 		end
 	elseif after_unconscious_notify then
 		most_wanted_phraselist = after_unconscious
-	elseif hungry and hungry > 15 then
+	elseif satiety <= 0 and hungry and hungry > 15 then
 
 		if hungry >= 80 then
 			most_wanted_phraselist = very_very_hungry
