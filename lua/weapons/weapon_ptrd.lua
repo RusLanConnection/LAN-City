@@ -68,7 +68,6 @@ SWEP.AnimShootHandMul = 1
 SWEP.DeploySnd = {"homigrad/weapons/draw_hmg.mp3", 55, 100, 110}
 SWEP.HolsterSnd = {"homigrad/weapons/hmg_holster.mp3", 55, 100, 110}
 SWEP.HoldType = "rpg"
-SWEP.ZoomPos = Vector(0, 2.7792, 5.8368)
 SWEP.RHandPos = Vector(0, 0, -1)
 SWEP.LHandPos = Vector(7, 0, -2)
 SWEP.SprayRand = {Angle(0.02, -0.02, 0), Angle(-0.02, 0.02, 0)}
@@ -132,9 +131,11 @@ SWEP.AnimsEvents = {
 local idlePos, idleAng = Vector(-6, 11, 8), Angle(0, -45.5, 0)
 local reloadPos, reloadAng = Vector(2, 8, 7), Angle(60, 0, 0)
 local restVec = Vector(-12, 0, 8)
+local bipodZoomPos, zoomPos = Vector(0, 0.5712, 4.9104), Vector(0, 2.7792, 5.8368)
 
 SWEP.FakePos = idlePos
 SWEP.FakeAng = idleAng
+SWEP.ZoomPos = zoomPos
 SWEP.AnimList = {
 	["idle"] = "base_idle",
 	["reload"] = "deployed_reload",
@@ -147,6 +148,7 @@ function SWEP:ThinkAdd()
 
 	local ft = FrameTime()
 	if self:IsResting() and self.FakePos ~= restVec and not self.reload then
+		self.ZoomPos = bipodZoomPos
 		self.AnimList = {
 			["idle"] = "deployed_idle",
 			["reload"] = "deployed_reload",
@@ -156,6 +158,7 @@ function SWEP:ThinkAdd()
 		self.FakePos = LerpVector(ft * 2, self.FakePos, restVec)
 		self.FakeAng = LerpAngle(ft * 4, self.FakeAng, angle_zero)
 	elseif not self:IsResting() and self.AnimList["idle"] ~= "base_idle" and not self.reload then
+		self.ZoomPos = zoomPos
 		self.AnimList = {
 			["idle"] = "base_idle",
 			["reload"] = "deployed_reload",
