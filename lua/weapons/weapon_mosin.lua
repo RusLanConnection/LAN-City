@@ -21,7 +21,7 @@ SWEP.AttachmentAng = Angle(90,0,0)
 SWEP.FakeBodyGroups = "000000000"
 SWEP.BarrelLength = 40
 SWEP.SUPBarrelLenght = 47
-SWEP.OpenBolt = false
+SWEP.OpenBolt = true
 SWEP.CantFireFromCollision = false // 2 спусковых крючка все дела
 
 SWEP.FakeViewBobBone = "ValveBiped.Bip01_L_Hand"
@@ -56,7 +56,18 @@ SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "7.62x54 mm"
 SWEP.Primary.Cone = 0
 SWEP.Primary.Spread = 0
-SWEP.Primary.Sound = {"weapons/tfa_ins2/k98/m40a1_fp.wav", 80, 90, 100}
+
+sound.Add({
+	name = "Mosin-Nagant_Shoot",
+	sound = {
+		"weapons/easternfront/mosin/m44_fp - copy (2).wav",
+		"weapons/easternfront/mosin/mn91_30_fp - copy (3).wav",
+		"weapons/easternfront/mosin/mn91_30_fp - copy.wav",
+		"weapons/easternfront/mosin/mn91_30_fp.wav"
+	},
+})
+
+SWEP.Primary.Sound = {"Mosin-Nagant_Shoot", 80, 90, 110}
 SWEP.SupressedSound = {"mosin/mosin_suppressed_fp.wav", 80, 90, 100}
 SWEP.availableAttachments = {
 	barrel = {
@@ -96,11 +107,11 @@ SWEP.holsteredAng = Angle(210, 0, 180)
 SWEP.AnimList = {
 	["idle"] = "base_idle",
 	["reload"] = "base_Fire_end",
-	["reload_empty"] = "base_Fire_end",
 	["finish_empty"] = "Base_Reload_End",
 	["finish"] = "Base_Reload_End",
 	["insert"] = "Base_Reload_Insert",
 	["start"] = "Base_Reload_Start",
+	["start_empty"] = "base_reload_start_empty",
 	["cycle"] = "base_Fire_end",
 }
 
@@ -141,40 +152,58 @@ SWEP.AnimsEvents = {
 	["Base_Reload_Start"] = {
 		[0.3] = function(self)
 			SetModelAmmo(self:GetWM(), self)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltback.wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_back.wav", 45, math_random(95, 105))
+			HideMag2(self:GetWM(), true)
+		end,
+		[0.4] = function(self)
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_forward.wav", 45, math_random(95, 105))
+		end,
+	},
+	["base_reload_start_empty"] = {
+		[0.3] = function(self)
+			SetModelAmmo(self:GetWM(), self)
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_back.wav", 45, math_random(95, 105))
 			HideMag2(self:GetWM(), true)
 		end,
 	},
 	["Base_Reload_Insert"] = {
 		[0.1] = function(self)
-			SetModelAmmo(self:GetWM(), self)
-			self:EmitSound("weapons/tfa_ins2/k98/mosin_bulletin_"..math_random(1,4)..".wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bullet_insert_"..math_random(5)..".wav", 45, math_random(95, 105))
 			HideMag2(self:GetWM(), true)
 		end,
+		[0.2] = function(self)
+			if CLIENT then
+				self:SetClip1(self:Clip1() + 1)
+			end
+			SetModelAmmo(self:GetWM(), self)
+		end
 	},
 	["Base_Reload_End"] = {
 		[0.2] = function(self)
 			SetModelAmmo(self:GetWM(), self)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltforward.wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_forward.wav", 45, math_random(95, 105))
 			HideMag2(self:GetWM(), false)
 		end,
+		[0.3] = function(self)
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_forward.wav", 45, math_random(95, 105))
+		end,
 		[0.5] = function(self)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltlatch.wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_close.wav", 45, math_random(95, 105))
 			HideMag2(self:GetWM(), false)
 		end,
 	},
 	["base_Fire_end"] = {
-		[0.1] = function(self)
+		[0.2] = function(self)
 			SetModelAmmo(self:GetWM(), self)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltback.wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_back.wav", 45, math_random(95, 105))
 		end,
-		[0.3] = function(self)
-			--self:RejectShell(self.ShellEject)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltforward.wav", 45, math_random(95, 105))
+		[0.4] = function(self)
+			self:RejectShell(self.ShellEject)
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_forward.wav", 45, math_random(95, 105))
 		end,
-		[0.5] = function(self)
+		[0.55] = function(self)
 			SetModelAmmo(self:GetWM(), self)
-			self:EmitSound("weapons/tfa_ins2/k98/m40a1_boltlatch.wav", 45, math_random(95, 105))
+			self:EmitSound("weapons/easternfront/mosin/handling/mosin_bolt_close.wav", 45, math_random(95, 105))
 		end
 	}
 }
@@ -199,7 +228,7 @@ end
 
 local function cock(self,time)
 	if SERVER then
-		self:Draw(true)
+		self:Draw(true, true)
 	end
 
 	if self:Clip1() == 0 then
@@ -283,7 +312,11 @@ function SWEP:Reload(time)
 
 	if SERVER then
 		self:SetNetVar("shootgunReload",CurTime() + 1.1)
-		self:PlayAnim(self.AnimList["start"] or "bolt_open_0",1,false,function() 
+		self:PlayAnim((self.drawBullet == nil and self.AnimList["start_empty"] or self.AnimList["start"]) or "bolt_open_0",1,false,function()
+			if self.drawBullet then
+				self:SetClip1(self:Clip1() - 1)
+				ply:GiveAmmo(1, self:GetPrimaryAmmoType(), true)
+			end
 			reloadFunc(self)
 		end,
 		false,true)
