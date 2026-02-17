@@ -293,7 +293,7 @@ local heatvomit_phraselist = {
 	"Fuuck.. Oughhh.. I don't feel-"
 }
 
-local hg_showthoughts = ConVarExists("hg_showthoughts") and GetConVar("hg_showthoughts") or CreateClientConVar("hg_showthoughts", "1", true, true, "Show the thoughts of your character", 0, 1)
+local hg_showthoughts = ConVarExists("hg_showthoughts") and GetConVar("hg_showthoughts") or CreateClientConVar("hg_showthoughts", "1", true, true, "Toggle thoughts of your character", 0, 1)
 
 function string.Random(length)
 	local length = tonumber(length)
@@ -431,11 +431,8 @@ local function get_status_message(ply)
 		else
 			most_wanted_phraselist = org.stomach == 1 and hungry_but_stomach_dead or hungry_a_bit
 		end
-
-	--[[elseif hg.nothing_happening(ply) then
-		most_wanted_phraselist = random_phrase]]
-	elseif hg.fearful(ply) then
-		most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
+	--elseif hg.fearful(ply) then
+		--most_wanted_phraselist = ((IsAimedAt(ply) > 0.9) and is_aimed_at_phrases or (math.random(10) == 1 and fear_hurt_ironic or fear_phrases))
 	end
 
 	if brain > 0.1 then

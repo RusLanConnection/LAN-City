@@ -557,6 +557,7 @@ function hg.Fake(ply, huyragdoll, no_freemove, force)
 	end
 
 	ply.FakeRagdollOld = nil
+	ply.OldRagdoll = nil
 
 	if timer.Exists("faking_up"..ply:EntIndex()) then
 		timer.Remove("faking_up"..ply:EntIndex(), 0)
@@ -604,7 +605,7 @@ function hg.Fake(ply, huyragdoll, no_freemove, force)
 	end
 end
 
-local hg_ragdollcombat = ConVarExists("hg_ragdollcombat") and GetConVar("hg_ragdollcombat") or CreateConVar("hg_ragdollcombat", 0, FCVAR_REPLICATED, "ragdoll combat", 0, 1)
+local hg_ragdollcombat = ConVarExists("hg_ragdollcombat") and GetConVar("hg_ragdollcombat") or CreateConVar("hg_ragdollcombat", 0, FCVAR_REPLICATED, "Toggle ragdoll combat-like ragdoll mode (walking, running in ragdoll, etc.)", 0, 1)
 
 local veczero = Vector(0,0,0)
 function hg.SetFreemove(ply, set)
@@ -728,6 +729,7 @@ function hg.FakeUp(ply, forced, instant)
 	hook_Run("Fake Up", ply, ragdoll)
 
 	ply.FakeRagdollOld = ragdoll
+	ply.OldRagdoll = ragdoll
 	ply:SetNWEntity("FakeRagdollOld", ragdoll)
 	ply.FakeRagdoll = nil
 	
