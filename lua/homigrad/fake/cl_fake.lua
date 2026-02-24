@@ -48,7 +48,7 @@ local turned = false
 local anglesadd = Angle()
 local oldangs = Angle()
 local lerpedq = Quaternion()
-local hg_oldfakecam = ConVarExists("hg_oldfakecam") and GetConVar("hg_oldfakecam") or CreateConVar("hg_oldfakecam", 0, FCVAR_ARCHIVE, "Old camera rotate", 0, 1)
+local hg_newfakecam = ConVarExists("hg_newfakecam") and GetConVar("hg_newfakecam") or CreateConVar("hg_newfakecam", 0, FCVAR_ARCHIVE, "New camera rotate", 0, 1)
 hook.Add("HG.InputMouseApply", "fakeCameraAngles2", function(tbl)
 	local cmd = tbl.cmd
 	local x = tbl.x
@@ -88,12 +88,12 @@ hook.Add("HG.InputMouseApply", "fakeCameraAngles2", function(tbl)
 	if not att or not istable(att) then return end
 	local att_Ang = att.Ang
 	local vel = follow:GetVelocity()
-	local huy = vel:Dot(angle:Right()) / 200
+	local huy = vel:Dot(angle:Right()) / 2000
 	
 	angle.roll = angle.roll - (lply.addvpangles and lply.addvpangles[3] or 0)
 
 	local oldroll = angle.roll
-	angle.roll = hg_oldfakecam:GetBool() and 0 or angle.roll
+	angle.roll = !hg_newfakecam:GetBool() and 0 or angle.roll
 
 	local q = Quaternion():SetAngle(angle)
 
@@ -114,7 +114,7 @@ hook.Add("HG.InputMouseApply", "fakeCameraAngles2", function(tbl)
 
 	angle.pitch = newAng.p
     angle.yaw = newAng.y
-    angle.roll = hg_oldfakecam:GetBool() and oldroll + lean_lerp * 0.5 or newAng.r
+    angle.roll = !hg_newfakecam:GetBool() and oldroll + lean_lerp * 0.5 or newAng.r
 
 	if wep.IsResting and wep:IsResting() then
 		angle.roll = math.Clamp(angle.roll, -15, 15)
@@ -211,7 +211,7 @@ CalcView = function(ply, origin, angles, fov, znear, zfar)
 	local _, angEye = LocalToWorld(vector_origin, ot, vector_origin, att_Ang)
 	angEye:Normalize()
 	
-	angEye[3] = hg_oldfakecam:GetBool() and 0 or (ply.fakeangles and ply.fakeangles[3] or 0)
+	angEye[3] = !hg_newfakecam:GetBool() and 0 or (ply.fakeangles and ply.fakeangles[3] or 0)
 	--angEye = ang
 	--angEye = att_Ang
 
