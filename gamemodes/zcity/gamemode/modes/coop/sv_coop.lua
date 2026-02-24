@@ -7,8 +7,8 @@ MODE.ROUND_TIME = 9000
 hg.NextMap = ""
 
 
-local coop_rts = CreateConVar("zb_coop_rts", "0", FCVAR_PROTECTED, "Toggle NPC rebel possess in Half-Life 2 CO-OP mode", 0, 1)
-local coop_rts_cmb = CreateConVar("zb_coop_rts_cmb", "0", FCVAR_PROTECTED, "Toggle NPC combine possess in Half-Life 2 CO-OP mode if zb_coop_rts is enabled", 0, 1)
+local coop_rts = CreateConVar("zb_coop_rts", "1", FCVAR_PROTECTED, "Toggle NPC rebel possess in Half-Life 2 CO-OP mode", 0, 1)
+local coop_rts_cmb = CreateConVar("zb_coop_rts_cmb", "1", FCVAR_PROTECTED, "Toggle NPC combine possess in Half-Life 2 CO-OP mode if zb_coop_rts is enabled", 0, 1)
 
 MODE.LootSpawn = false
 
@@ -278,6 +278,7 @@ end
 local clr_rebel, clr_medic, clr_grenadier = Color(255, 155, 0), Color(190, 0, 0), Color(190, 90, 0)
 function MODE:GiveEquipment()
     self.COOPPoints = zb.GetMapPoints("HMCD_COOP_SPAWN")
+    
     timer.Simple(0, function()
         local players = player.GetAll()
         local medicCount = 0
@@ -298,7 +299,7 @@ function MODE:GiveEquipment()
 
         for _, ply in RandomPairs(players) do
             local pos = self:GetPlySpawn(ply)
-            
+
             if not ply:Alive() then continue end
 
             ply:SetSuppressPickupNotices(true)
@@ -382,6 +383,8 @@ function MODE:GiveEquipment()
 
             local hands = ply:Give("weapon_hands_sh")
             ply:SelectWeapon("weapon_hands_sh")
+
+            ply.FirstSpawn = true
 
             timer.Simple(0.1, function()
                 ply.noSound = false
@@ -479,6 +482,12 @@ local combineNPCClasses = {
     ["npc_metropolice"] = true,
 }
 
+local zombieNPCClasses = {
+    ["npc_zombie"] = true,
+    ["npc_fastzombie"] = true,
+    ["npc_poisonzombie"] = true,
+}
+
 local zb_coop_maxpossesses = ConVarExists("zb_coop_maxpossesses") and GetConVar("zb_coop_maxpossesses") or CreateConVar("zb_coop_maxpossesses",3,FCVAR_SERVER_CAN_EXECUTE,"Max NPC possession amount in Half-Life 2 CO-OP round",1,100)
 
 local function CanPossessNPC(ply, npc)
@@ -491,6 +500,7 @@ local function CanPossessNPC(ply, npc)
     local npcClass = npc:GetClass()
     if friendlyNPCClasses[npcClass] then return true end
     if coop_rts_cmb:GetBool() and combineNPCClasses[npcClass] then return true end
+    if zombieNPCClasses[npcClass] then return true end
 
     return false
 end
@@ -507,6 +517,7 @@ local function GetNPCWeapon(npc)
 end
 
 local clr_combine, clr_metrocop = Color(0, 180, 180), Color(0, 100, 255)
+
 local function PossessNPC(ply, npc)
     if not CanPossessNPC(ply, npc) then return false end
     
@@ -516,6 +527,7 @@ local function PossessNPC(ply, npc)
     local npcHealth = npc:Health()
     local npcClass = npc:GetClass()
     local isCombine = combineNPCClasses[npcClass]
+    local isZombie = zombieNPCClasses[npcClass]
     
     local currentMap = game.GetMap()
     local mapData = CurrentRound().Maps[currentMap] or {PlayerEqipment = "rebel"}
@@ -552,6 +564,9 @@ local function PossessNPC(ply, npc)
                 ply:SetPlayerClass("Metrocop")
                 zb.GiveRole(ply, "Metrocop", clr_metrocop)
             end
+        elseif isZombie then
+            ply:SetPlayerClass("headcrabzombie")
+            zb.GiveRole(ply, "Zombie", clr_medic)
         elseif playerClass == "refugee" or playerClass == "citizen" then
             ply:SetPlayerClass("Refugee", {bNoEquipment = playerClass == "citizen"})
             zb.GiveRole(ply, "Refugee", clr_rebel)
@@ -605,7 +620,8 @@ hook.Add("PlayerButtonDown", "checks", function(ply, button)
     for _, ent in ipairs(ents.FindInSphere(searchPos, nearestDist)) do
         if IsValid(ent) and ent:IsNPC() then
             local npcClass = ent:GetClass()
-            local canUse = friendlyNPCClasses[npcClass] or (coop_rts_cmb:GetBool() and combineNPCClasses[npcClass])
+            local canUse = CanPossessNPC(ply, ent)
+
             if canUse then
                 local dist = ent:GetPos():Distance(searchPos)
                 if dist < nearestDist then

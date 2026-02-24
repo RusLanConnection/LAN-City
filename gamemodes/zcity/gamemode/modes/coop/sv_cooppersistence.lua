@@ -291,7 +291,10 @@ hook.Add("PlayerSpawn", "CoopPersistence_MidRoundSpawn", function(ply)
     timer.Simple(0.5, function()
         if not IsValid(ply) or not ply:Alive() then return end
         local hasWeapons = #ply:GetWeapons() > 1 
+        
         if hasWeapons then return end
+        if ply.PlayerClassName == "headcrabzombie" then return end
+
         if CurrentRound().GetPlySpawn then
             CurrentRound():GetPlySpawn(ply)
         end
