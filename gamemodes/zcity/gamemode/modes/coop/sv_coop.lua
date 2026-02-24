@@ -556,7 +556,7 @@ local function PossessNPC(ply, npc)
             ply:SetNetVar("Inventory", inv)
         end
         
-        if isCombine then
+        if isCombine then --!! TODO: rewrite all of this elseif shit to beautiful table
             if npcClass == "npc_combine_s" then
                 ply:SetPlayerClass("Combine")
                 zb.GiveRole(ply, "Combine", clr_combine)
@@ -573,6 +573,9 @@ local function PossessNPC(ply, npc)
         elseif playerClass == "rebel" then
             ply:SetPlayerClass("Rebel")
             zb.GiveRole(ply, "Rebel", clr_rebel)
+		elseif isZombie then
+            ply:SetPlayerClass("headcrabzombie")
+            zb.GiveRole(ply, "Zombie", clr_zombie)
         else
             ply:SetPlayerClass("Rebel")
             zb.GiveRole(ply, "Rebel", clr_rebel)

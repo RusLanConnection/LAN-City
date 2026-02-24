@@ -653,7 +653,8 @@ function SWEP:EmitShoot()
 
 		self:PlaySnd("zcitysnd/sound/weapons/firearms/hndg_colt1911/colt_1911_fire1.wav", nil, nil, vol * (insideVal / 16), 150, 51256, true)
 		self:PlaySnd("zcitysnd/sound/weapons/firearms/hndg_colt1911/colt_1911_fire1.wav", nil, nil, vol * (insideVal / 16), 80, 50256, true)
-
+		self:PlaySnd("grenades/grenade_flash_start_indoor_distant.wav", nil, nil, vol * (insideVal / 16), 80, 50256, true)
+		
 		self:PlaySnd("weapons/shoot/shot1.wav", nil, nil, vol * 1, 150, 52256, true)
 	end
 	local nearDist = (GetViewEntity() == ply or GetViewEntity():GetPos():Distance( self:GetPos() ) < 150)
@@ -1937,6 +1938,10 @@ function SWEP:SetHandPos(noset)
 	if (ent ~= ply and not (inuse)) then
 		--self.lhandik = self:IsPistolHoldType() and !self:KeyDown(IN_FORWARD) and !self:KeyDown(IN_BACK)//self.weight > 1 and (self.lerped_angle and self.lerped_angle > 0.5)
 		self.lhandik = false
+	end
+	
+	if (ent ~= ply and ent ~= ply.OldRagdoll) then
+		self.lhandik = self.lhandik and !(hg.KeyDown(ply, IN_FORWARD + IN_BACK) and !self.reload and !ply:InVehicle())
 	end
 
 	--ply:SetIK(false)

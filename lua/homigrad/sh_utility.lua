@@ -2142,7 +2142,10 @@ local IsValid = IsValid
 			rag.inventory.Weapons = {}
 
 			for k, wep in pairs(loot) do
-				rag.inventory.Weapons[wep] = {}
+				local weapon = weapons.Get(wep)
+				if rag.inventory.Weapons and rag.inventory.Weapons[wep] then return end
+				rag.inventory.Weapons = rag.inventory.Weapons or {}
+				rag.inventory.Weapons[wep] = weapon and weapon.GetInfo and weapon:GetInfo() or true
 				rag:SetNetVar("Inventory", rag.inventory)
 			end
 
@@ -2154,7 +2157,7 @@ local IsValid = IsValid
 		end
 	end)
 
-	if SERVER then --// Force enable npc ragdolls collision
+	if SERVER then --// Force enable npc serverside ragdolls
 		RunConsoleCommand("ai_serverragdolls", "1")
 	end
 --//
@@ -2491,8 +2494,8 @@ local IsValid = IsValid
 			if PhysObj and PhysObj.GetMass and PhysObj:GetMass() > 14 then return false end
 		end
 
-		if IsValid(ply.FakeRagdoll) then return false end
-		if ply.PickUpCooldown > CurTime() then return false end
+		--if IsValid(ply.FakeRagdoll) then return false end
+		if ply.PickUpCooldown > CurTime() and not IsValid(ply.FakeRagdoll) then return false end
 
 		ply.PickUpCooldown = CurTime() + 0.15
 	end)
