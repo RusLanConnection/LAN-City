@@ -1,6 +1,8 @@
 local getBloodColor = FindMetaTable( "Entity" ).GetBloodColor
 local isBulletDamage = FindMetaTable( "CTakeDamageInfo" ).IsBulletDamage
 
+hg.ConVars = hg.ConVars or {}
+
 local hg_legacycam = ConVarExists("hg_legacycam") and GetConVar("hg_legacycam") or CreateConVar("hg_legacycam", 0, FCVAR_REPLICATED, "Toggle legacy first-person view camera", 0, 1)
 
 local host_timescale = game.GetTimeScale
@@ -721,8 +723,12 @@ function hgWreckBuildings(blaster, pos, power, range, ignoreVisChecks) -- taken 
 					end
 
 					if proceed then
-						if mass <= myDestroyThreshold then
-							SafeRemoveEntity(prop)
+                        if mass <= myDestroyThreshold then
+                            if prop:GetClass() == "prop_ragdoll" or prop:IsNPC() then
+                                physObj:EnableMotion(true)
+                            else
+                                SafeRemoveEntity(prop)
+                            end
 						elseif mass <= myLoosenThreshold then
 							physObj:EnableMotion(true)
 							constraint.RemoveAll(prop)
@@ -867,6 +873,7 @@ hook.Add( "OnEntityCreated", "VechicleChairs", function( ent )
 			
 			ent:SetModel("models/props_junk/PopCan01a.mdl")
 			ent:SetAngles(ent:LocalToWorldAngles(UwU and Angle(0, -1, 0) or Angle(0,90,0)))
+			ent:SetPos(ent:GetPos() + vector_up * 3 + ent:GetAngles():Forward() * 5)
 		end
 	end)
 	
@@ -1033,7 +1040,7 @@ end)
 
 hook.Add( "Move", "hg_RagdollIntoWalls", function( ply, mv)
 	local vel = mv:GetVelocity()
-	if ply:GetMoveType() == MOVETYPE_WALK and vel:Length() > 750 and not hg.GetCurrentCharacter(ply):IsRagdoll() then
+	if ply:GetMoveType() == MOVETYPE_WALK and vel:LengthSqr() > 750 * 750 and not hg.GetCurrentCharacter(ply):IsRagdoll() and !(ply.IsStimulated and ply:IsStimulated()) then
 		local tr = util.TraceLine({
 			start = ply:GetPos(),
 			endpos = ply:GetPos() + vel:Angle():Forward() * 100,
@@ -1283,25 +1290,32 @@ hook.Add( "OnEntityCreated", "ReplaceEnt", function( ent )
 end )
 
 -- https://www.youtube.com/watch?v=HvtIwUgJgjA
--- Death
-local reasons = {
-	"Goodbye.",
-    "Better luck next time.",
-    "Error",
-    "Something wrong"
-}
+--\\ Kick on death
+	local reasons = {
+		"Goodbye.",
+		"Better luck next time.",
+		"Error",
+		"Something wrong"
+	}
 
-local plymeta = FindMetaTable("Player")
+	local plymeta = FindMetaTable("Player")
 
-local flags = bit.bor(FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_SERVER_CAN_EXECUTE, FCVAR_NEVER_AS_STRING)
-local hg_sync = CreateConVar("hg_sync", 0, flags, "Toggle death synchronized (kick player on death)", 0, 1)
+	local flags = bit.bor(FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_SERVER_CAN_EXECUTE, FCVAR_NEVER_AS_STRING)
+	local hg_sync = CreateConVar("hg_sync", 0, flags, "Toggle death synchronized (kick player on death)", 0, 1)
 
-function plymeta:SyncDeath()
-	local SyncLastMessage = table.Random(reasons)
-	if !self:IsSuperAdmin() then
-		self:Kick(SyncLastMessage)
+	function plymeta:SyncDeath()
+		local SyncLastMessage = table.Random(reasons)
+		if !self:IsSuperAdmin() then
+			self:Kick(SyncLastMessage)
+		end
 	end
-end
+
+	hook.Add("PlayerDeath","I_Feel_Death",function(ply)
+		if hg_sync:GetBool() then
+			ply:SyncDeath()
+		end
+	end)
+--//
 
 oldGetUseEntity = oldGetUseEntity or plymeta.GetUseEntity
 
@@ -1311,27 +1325,44 @@ function plymeta:GetUseEntity()
 	return ent
 end
 
-hook.Add("PlayerDeath","I_Feel_Death",function(ply)
-	if hg_sync:GetBool() then
-		ply:SyncDeath()
-	end
-end)
-
-hook.Add("PostEntityTakeDamage", "GlassShards", function(ent, dmginfo)
-	if IsValid(ent) and math.random(4) == 2 then
-		if ent:GetClass() == "func_breakable_surf" or (ent:GetClass() == "func_breakable" and ent:GetMaterialType() == MAT_GLASS) then
-			local glass = ents.Create("weapon_hg_glassshard")
-			local inf = dmginfo:GetInflictor()
-			glass:SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
-			glass:SetAngles(AngleRand(-180, 180))
-			glass:Spawn()
-			glass.IsSpawned = true
-			glass.init = true
-			--Player(2):SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
-			--print(ent, glass) -- bro im spawned and etc.
+--\\ Get shards/table legs on break
+	local string_find = string.find
+	hook.Add("PropBreak", "FurnitureLegs", function(ply, ent)
+		if IsValid(ent) and string_find(ent:GetModel(), "furniture", 1, "%a") and math.random(3) == 2 then
+			if string_find(ent:GetModel(), "table", 1, "%a") or string_find(ent:GetModel(), "drawer", 1, "%a") or string_find(ent:GetModel(), "desk", 1, "%a") then
+				local leg = ents.Create("weapon_table_leg")
+				leg:SetPos(ent:GetPos())
+				leg:SetAngles(AngleRand(-180, 180))
+				leg:Spawn()
+				leg.IsSpawned = true
+				leg.init = true
+			elseif string_find(ent:GetModel(), "chair", 1, "%a") or string_find(ent:GetModel(), "vanity", 1, "%a") then
+				local leg = ents.Create("weapon_chair_leg")
+				leg:SetPos(ent:GetPos())
+				leg:SetAngles(AngleRand(-180, 180))
+				leg:Spawn()
+				leg.IsSpawned = true
+				leg.init = true
+			end
 		end
-	end
-end)
+	end)
+
+	hook.Add("PostEntityTakeDamage", "GlassShards", function(ent, dmginfo)
+		if IsValid(ent) and math.random(4) == 2 then
+			if ent:GetClass() == "func_breakable_surf" or (ent:GetClass() == "func_breakable" and ent:GetMaterialType() == MAT_GLASS) then
+				local glass = ents.Create("weapon_hg_glassshard")
+				local inf = dmginfo:GetInflictor()
+				glass:SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
+				glass:SetAngles(AngleRand(-180, 180))
+				glass:Spawn()
+				glass.IsSpawned = true
+				glass.init = true
+				--Player(2):SetPos(IsValid(inf) and inf:GetPos() or dmginfo:GetAttacker():GetPos())
+				--print(ent, glass) -- bro im spawned and etc.
+			end
+		end
+	end)
+--//
 
 local entMeta = FindMetaTable( "Entity" )
 
@@ -1498,7 +1529,7 @@ end )
 
 hook.Add("PlayerUse", "DoorClose", function(ply, ent)
 	local getdoor = ply:GetUseEntity()
-	if string.find(tostring(getdoor), "prop_door_rotating") and getdoor:GetInternalVariable("m_eDoorState") == 2 then
+	if string_find(tostring(getdoor), "prop_door_rotating") and getdoor:GetInternalVariable("m_eDoorState") == 2 then
 		if getdoor:GetInternalVariable("m_hMaster") != NULL then
 			getdoor:GetInternalVariable("m_hMaster"):Fire("close")
 			hg.RunZManipAnim(ply, "door_open_back", nil, 2, {self})
@@ -1529,7 +1560,7 @@ hook.Add( "KeyPress", "snowballs_pickup", function( ply, key )
 end )
 
 local warmingEnts = {
-	["env_sprite"] = 0.1,
+	["env_sprite"] = 0.0,
 	["env_fire"] = 0.5,
 	["vfire"] = function(ent) return ent:GetFireState() end,
 }

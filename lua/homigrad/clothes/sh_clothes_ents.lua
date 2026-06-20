@@ -215,12 +215,19 @@ local clothes = {
         },
         Male = {
             Model = "models/tnb/halflife/male_legs_medic.mdl",
+            ModelSubMaterials = {
+                [0] = "models/humans/male/group03/citizen_sheet"
+            },
+            --models/humans/male/group03/citizen_sheet
             HideSubMaterails = {"distac/gloves/pants", "distac/gloves/cross"},
             Skin = 5,
             Bodygroups = "0000000000000"
         },
         FeMale = {
             Model = "models/tnb/halflife/female_legs_medic.mdl",
+            ModelSubMaterials = {
+                [0] = "models/humans/female/group03/citizen_sheet"
+            },
             HideSubMaterails = {"distac/gloves/pants", "distac/gloves/cross"},
             Skin = 0,
             Bodygroups = "0000000000000"
@@ -358,7 +365,7 @@ local function register()
         scripted_ents.Register(ENT, "ent_zcity_colthes_" .. k)
     end
 end
-
+if CLIENT and !steamworks.ShouldMountAddon("3670069780") then return end -- anyway client not abile to see it when no
 hook.Add("Think","remove-me-clothes",function()
     register()
     hook.Remove("Think","remove-me-clothes")

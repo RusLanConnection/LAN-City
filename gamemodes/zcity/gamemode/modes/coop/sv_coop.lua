@@ -21,8 +21,27 @@ end
 MODE.Lootables["models/items/item_item_crate.mdl"] = true
 MODE.Lootables["models/items/item_item_crate_dynamic.mdl"] = true
 
+local friendlytable = {
+    {"Rebel", "Refugee", "Gordon"},
+    {"Metrocop", "Combine"},
+    {"headcrabzombie"},
+}
+
+hg.FriendlyClasses = {}
+
+for i, tbl in ipairs(friendlytable) do
+    for j, class in ipairs(tbl) do
+        hg.FriendlyClasses[class] = {}
+        for k, class2 in ipairs(tbl) do
+            hg.FriendlyClasses[class][class2] = true
+        end
+    end
+end
+
 function MODE.GuiltCheck(Attacker, Victim, add, harm, amt)
-	return 1.5, true
+    if !hg.FriendlyClasses[Attacker.PlayerClassName] or !hg.FriendlyClasses[Attacker.PlayerClassName][Victim.PlayerClassName] then return 0, false end
+	
+    return 1.5, true
 end
 
 function MODE:GetLootTable()
@@ -191,7 +210,7 @@ function MODE:ShouldRoundEnd()
 
     for _,ply in player.Iterator() do
         if not ply:Alive() then continue end
-        if ply.PlayerClassName == "Combine" or ply.PlayerClassName == "Metrocop" then continue end
+        if ply.PlayerClassName == "Combine" or ply.PlayerClassName == "Metrocop" or ply.PlayerClassName == "headcrabzombie" then continue end
         lives = lives + 1
     end
 
@@ -211,15 +230,15 @@ function MODE:ShouldRoundEnd()
 end
 
 function MODE:RoundStart()
-    for _,ply in player.Iterator() do
+    for _, ply in player.Iterator() do
         if ply.PlayerClassName == "Gordon" then
-            for k,ent in ipairs(ents.FindInSphere( ply:GetPos(), 512 )) do
+            for k, ent in ipairs(ents.FindInSphere( ply:GetPos(), 512 )) do
                 if RemoveGordonWeapons[ent:GetClass()] and not IsValid(ent:GetOwner()) then
                     SafeRemoveEntity(ent)
                 end
             end
         else
-            for k,v in ipairs(ply:GetWeapons()) do
+            for k, v in ipairs(ply:GetWeapons()) do
                 if v:GetClass() == "weapon_bugbait" then
                     ply:StripWeapon("weapon_bugbait")
                 end

@@ -272,6 +272,7 @@ if CLIENT then
 	local white = Material("color/white")
 	local brainhemorrhage = Material( "overlays/brainhemorrhageoverlay.png" )
 
+	local hg_gopro = ConVarExists("hg_gopro") and GetConVar("hg_gopro") or CreateClientConVar("hg_gopro", "0", true, false, "Toggle GoPro-like first-person camera view", 0, 1)
 	hook.Add("Post Pre Post Processing", "renderHelmetThingy", function()
 		cam.IgnoreZ(true)
 		//cam.Start2D()
@@ -310,7 +311,7 @@ if CLIENT then
 				CustomSndPlayed = true
 			end
 
-			if hg.armor.face[armors["face"]].viewmaterial then
+			if hg.armor.face[armors["face"]].viewmaterial and !hg_gopro:GetBool() then
 				local custommat = hg.armor.face[armors["face"]].viewmaterial
 
 				surface.SetDrawColor(255,255,255,255)
@@ -412,9 +413,9 @@ if CLIENT then
 			tbl["hg_brassknuckles"] = inventory["Weapons"]["hg_brassknuckles"]
 		end
 	
-		if not organism.otrub and table.Count(tbl) > 0 then
+		if not organism.otrub and table.Count(tbl) > 0 and lply:KeyDown(IN_WALK) then
 			hg.radialOptions = hg.radialOptions or {}
-			local newEntry = {equipmentMenu, "Equipment"}
+			local newEntry = {equipmentMenu, "Drop Equipment"}
 			hg.radialOptions[#hg.radialOptions + 1] = newEntry
 		end
 	end)

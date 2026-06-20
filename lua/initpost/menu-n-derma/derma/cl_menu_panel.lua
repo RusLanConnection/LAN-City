@@ -2,10 +2,12 @@ local PANEL = {}
 local curent_panel 
 local red_select = Color(192,0,0)
 
+DISCORD_URL = "https://discord.gg/475EmEdTgH"
+
 local Selects = {
     {Title = "Disconnect", Func = function(luaMenu) RunConsoleCommand("disconnect") end},
     {Title = "Main Menu", Func = function(luaMenu) gui.ActivateGameUI() luaMenu:Close() end},
-    {Title = "Discord", Func = function(luaMenu) luaMenu:Close() gui.OpenURL("https://discord.gg/475EmEdTgH")  end},
+    {Title = "Discord", Func = function(luaMenu) luaMenu:Close() gui.OpenURL(DISCORD_URL)  end},
     {Title = "Traitor Role",
     GamemodeOnly = true,
     CreatedFunc = function(self, parent, luaMenu)
@@ -252,7 +254,10 @@ function PANEL:AddSelect( pParent, strTitle, tbl )
     btn.RColor = Color(225,225,225)
     function btn:DoClick()
         -- ,kz оптимизировать надо, но идёт ошибка(кэшировать бы luaMenu.panelparrent вместо вызова его каждый раз)
-        if curent_panel == string.lower(strTitle) then 
+        if curent_panel == string.lower(strTitle) then
+			for i = 1, 3 do
+				surface.PlaySound("shitty/tap_release.wav")
+			end
             luaMenu.panelparrent:AlphaTo(0,0.2,0,function()
                 luaMenu.panelparrent:Remove()
                 luaMenu.panelparrent = nil
@@ -280,6 +285,9 @@ function PANEL:AddSelect( pParent, strTitle, tbl )
             btn.Func(luaMenu,luaMenu.panelparrent)
             curent_panel = string.lower(strTitle)
         end)
+		for i = 1, 3 do
+			surface.PlaySound("shitty/tap_depress.wav")
+		end
     end
 
     function btn:Think()
@@ -290,7 +298,7 @@ function PANEL:AddSelect( pParent, strTitle, tbl )
 
         local targetText = (self:IsHovered()) and string.upper(strTitle) or strTitle
         local crw = self:GetText()
-        
+
         if (crw ~= targetText) or (curent_panel == string.lower(strTitle)) then
             local ntxt = ""
             local will_text = (curent_panel == string.lower(strTitle) and not strTitle == 'Traitor Role') and '[ '..string.upper(strTitle)..' ]' or strTitle
@@ -302,6 +310,9 @@ function PANEL:AddSelect( pParent, strTitle, tbl )
                     ntxt = ntxt .. char
                 end
             end
+			if self:GetText() ~= ntxt then
+				surface.PlaySound("shitty/tap-resonant.wav")
+			end
             self:SetText(ntxt)
         end
         self:SizeToContents()

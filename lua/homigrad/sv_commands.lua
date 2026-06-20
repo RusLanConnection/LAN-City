@@ -114,17 +114,24 @@ if SERVER then
     util.AddNetworkString("AnotherLightningEffect")
     util.AddNetworkString("PluvCommand")
 
-    COMMANDS.god = {function(ply)
+    COMMANDS.zc_god = {function(ply)
         if not ply.organism then return end
         
-        ply.organism.godmode = true
-    end,2}
+        ply.organism.godmode = !ply.organism.godmode
+		ply:Notify(ply.organism.godmode and "now i'm immortal..." or "now i'm mortal")
+		return
+    end,1}
 
-    COMMANDS.ungod = {function(ply)
+	COMMANDS.zc_cloak = {function(ply)
         if not ply.organism then return end
-        
-        ply.organism.godmode = nil
-    end,2}
+		ply.cloak = !ply.cloak
+        ply:SetMaterial(ply.cloak and "NULL" or nil)
+		ply:DrawShadow(!ply.cloak)
+		ply:SetCollisionGroup(ply.cloak and COLLISION_GROUP_DEBRIS or COLLISION_GROUP_PLAYER)
+		ply:RemoveAllDecals()
+		ply:Notify(ply.cloak and "now i'm invisible..." or "now i'm visible") -- walking by the wall
+		return
+    end,1}
 
     COMMANDS.punish = {function(ply, args)
         if #args < 1 then
@@ -204,12 +211,13 @@ if SERVER then
         target:Notify(message, 0)
         ply:ChatPrint("Sent notification to " .. target:GetName() .. ": " .. message)
 
-    end, 2, "ник игрока сообщение"}
+    end, 2, "name; message"}
 
 	COMMANDS.setmodel = {function(ply, args)
 		if not ply:IsAdmin() then return end
 		local plya = #args > 1 and args[1] or ply:Name()
 		local mdl = #args > 1 and args[2] or args[1]
+
 		for i, ply2 in pairs(player.GetListByName(plya)) do
 			if ply2:Alive() then
 				local Appearance = ply2.CurAppearance or hg.Appearance.GetRandomAppearance()
@@ -223,4 +231,30 @@ if SERVER then
 			end
 		end
 	end, 0}
+
+	--// Aliases
+	COMMANDS.model = COMMANDS.setmodel
+	COMMANDS.playermodel = COMMANDS.setmodel
+	COMMANDS.setplayermodel = COMMANDS.setmodel
+
+	COMMANDS.setscale = {function(ply, args)
+		if not ply:IsAdmin() then return end
+		local plya = #args > 1 and args[1] or ply:Name()
+		local scale = #args > 1 and args[2] or args[1]
+
+		for i, ply2 in pairs(player.GetListByName(plya)) do
+			if ply2:Alive() then
+				ply2:SetModelScale(scale)
+
+				ply:ChatPrint(ply2:Name().. "'s model scale set to " .. tostring(scale))
+			end
+		end
+	end, 0}
+
+	--// Aliases
+	COMMANDS.setsize = COMMANDS.setscale
+	COMMANDS.scale = COMMANDS.setscale
+	COMMANDS.size = COMMANDS.setscale
+	COMMANDS.setmodelscale = COMMANDS.setscale
+	COMMANDS.modelscale = COMMANDS.setscale
 end
