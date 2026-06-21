@@ -352,8 +352,8 @@ PLUGIN.Bullet_StandartMask = MASK_SHOT
 			return
 		end
 
-		local interval = FrameTime()
-		local physenv_gravity = physenv.GetGravity()
+		local interval = FrameTime() / 4
+		local physenv_gravity = physenv.GetGravity() * 5
 		
 		--=\\Изменения self.Vel
 			--==\\Gravity
@@ -642,7 +642,7 @@ PLUGIN.Bullet_StandartMask = MASK_SHOT
 			
 			if(tracer_body)then
 				local color = self.TracerSetings.TracerColor or color_white
-				local size = math.max(self.Size, self.TracerSetings.TracerHeadSize or 5)
+				local size = math.max(self.Size, self.TracerSetings.TracerHeadSize or 5) * 50
 				
 				render.SetMaterial(tracer_body)
 				render.DrawSprite(self.Pos, size, size, color)
@@ -673,7 +673,7 @@ PLUGIN.Bullet_StandartMask = MASK_SHOT
 					render.StartBeam(math.min(#self.PathPoints, self.TracerSetings.MaxPathPoints))
 					
 					for i = math.max(#self.PathPoints - self.TracerSetings.MaxPathPoints, 1), #self.PathPoints do
-						render.AddBeam(self.PathPoints[i], (self.TracerSetings.TracerWidth or 2) / 5, 1, color)
+						render.AddBeam(self.PathPoints[i], (self.TracerSetings.TracerWidth * 5 or 10) / 5, 1, color)
 					end
 					
 					render.EndBeam()

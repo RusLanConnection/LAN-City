@@ -332,8 +332,8 @@ function hg.likely_to_phrase(ply)
 	local broken_dislocated = org.just_damaged_bone and ((org.just_damaged_bone - CurTime()) < -3)
 	local hungry = org.hungry
 
-	return (broken_dislocated) and 5
-		or (pain > 65) and 5
+	return (broken_dislocated) and 4
+		or (pain > 65) and 4
 		or (temperature < 31 and 0.5)
 		or (temperature > 38 and 0.5)
 		or (blood < 3000 and 0.3)

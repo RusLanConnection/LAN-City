@@ -189,7 +189,7 @@ module[2] = function(owner, org, mulTime)
 		
 		if org.wantToVomit > 0.90 then
 			--if IsValid(owner) then
-				owner:Notify(table.Random(about_to_puke), 15, "internalbleed_pre")
+				--owner:Notify(table.Random(about_to_puke), 15, "internalbleed_pre")
 			--end
 		end
 	end

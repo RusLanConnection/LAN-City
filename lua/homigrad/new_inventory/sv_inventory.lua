@@ -10,6 +10,7 @@ net.Receive("NI_SelectWeapon", function(len, ply)
 end)
 
 local enableNewInv = CreateConVar("hg_radialinventory", 0, FCVAR_SERVER_CAN_EXECUTE, "Toggle radial (NMRIH-like) inventory", 0, 1)
+SetGlobalBool("RadialInventory", enableNewInv:GetBool())
 cvars.AddChangeCallback("hg_radialinventory", function(convar_name, value_old, value_new)
 	SetGlobalBool("RadialInventory", enableNewInv:GetBool())
 end)
