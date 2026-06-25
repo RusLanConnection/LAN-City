@@ -352,7 +352,7 @@ PLUGIN.Bullet_StandartMask = MASK_SHOT
 			return
 		end
 
-		local interval = FrameTime() / 4
+		local interval = FrameTime() / 3
 		local physenv_gravity = physenv.GetGravity() * 5
 		
 		--=\\Изменения self.Vel

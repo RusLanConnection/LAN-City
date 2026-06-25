@@ -174,7 +174,8 @@ hook.Add("radialOptions", "EngineerCraft", function()
 			end
 
 			local tbl = hg.ammotypeshuy[name]
-			if tbl.BulletSettings and tbl.BulletSettings.Mass * amt > 50 then
+
+			if tbl and tbl.BulletSettings and tbl.BulletSettings.Mass * amt > 50 then
 				have_ammo = true
 			end
 		end

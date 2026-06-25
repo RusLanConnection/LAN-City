@@ -84,7 +84,7 @@ concommand.Add("hg_create_pipebomb", function(ply)
 			end
 
 			local tbl = hg.ammotypeshuy[name]
-			if tbl.BulletSettings and tbl.BulletSettings.Mass * amt > 50 then
+			if tbl and tbl.BulletSettings and tbl.BulletSettings.Mass * amt > 50 then
 				have_ammo = {name, amt}
 			end
 		end
