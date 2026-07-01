@@ -10,6 +10,9 @@ MODE.ROUND_TIME = 240
 
 MODE.Chance = 0.04
 
+local ct_Frequency = 0
+local t_Frequency = 0
+
 function MODE.GuiltCheck(Attacker, Victim, add, harm, amt)
 	return 1, true--returning true so guilt bans
 end
@@ -50,6 +53,9 @@ function MODE:RoundStart()
 	for k,ply in player.Iterator() do
 		ply:Freeze(false)
 	end
+
+	ct_Frequency = math.Round(math.Rand(88,95),1)
+	t_Frequency = math.Round(math.Rand(100,108),1)
 end
 
 local tblweps = {
@@ -130,7 +136,7 @@ function MODE:GiveEquipment()
 			ply.organism.allowholster = true
 
 			local Radio = ply:Give("weapon_walkie_talkie")
-			Radio.Frequency = (ply:Team() == 1 and math.Round(math.Rand(88,95),1)) or math.Round(math.Rand(100,108),1)
+			Radio.Frequency = (ply:Team() == 1 and ct_Frequency) or t_Frequency
 			local hands = ply:Give("weapon_hands_sh")
 			ply:SelectWeapon("weapon_hands_sh")
 

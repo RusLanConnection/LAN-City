@@ -114,7 +114,7 @@ local function legs(org, bone, dmg, dmgInfo, key, boneindex, dir, hit, ricochet)
 		org.immobilization = org.immobilization + dmg * 10
 		org.fearadd = org.fearadd + 0.5
 
-		if org.isPly and !org[key.."amputated"] then org.owner:Notify(dislocated_leg[math.random(#dislocated_leg)], 1, "dislocated"..key, 1, nil, nil) end
+		if IsValid(org.owner) and org.isPly and !org[key.."amputated"] and org.owner:Alive() then org.owner:Notify(dislocated_leg[math.random(#dislocated_leg)], 1, "dislocated"..key, 1, nil, nil) end
 
 		timer.Simple(0, function() hg.LightStunPlayer(org.owner,2) end)
 		org.owner:EmitSound("bones/bone"..math.random(8)..".mp3", 75, 100, 1, CHAN_AUTO)
