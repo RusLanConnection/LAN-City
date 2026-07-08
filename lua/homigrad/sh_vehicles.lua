@@ -8,6 +8,8 @@ hg.vehiclecamblacklist = hg.vehiclecamblacklist or {}
 function hg.NoFakeInCar(veh)
     if hg_no_fake_in_cars:GetBool() then return true end
     if !IsValid(veh) then return end
+
+    if veh.LVS then return true end
     
     if hg.vehicleragblacklist[veh:GetClass()] then return true end
 
@@ -23,6 +25,8 @@ end
 function hg.NoCameraInCar(veh)
     if hg_no_camera_in_cars:GetBool() then return true end
     if !IsValid(veh) then return end
+
+    if veh.LVS then return true end
 
     if hg.vehiclecamblacklist[veh:GetClass()] then return true end
 

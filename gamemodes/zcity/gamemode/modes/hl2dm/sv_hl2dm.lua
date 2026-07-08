@@ -18,6 +18,7 @@ function MODE.GuiltCheck(Attacker, Victim, add, harm, amt)
 end
 
 util.AddNetworkString("hl2dm_start")
+
 function MODE:Intermission()
 	game.CleanUpMap()
 

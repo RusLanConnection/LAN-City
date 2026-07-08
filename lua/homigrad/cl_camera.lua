@@ -7,6 +7,7 @@ local whitelist = {
 	weapon_pistol = true,
 	weapon_crossbow = true,
 	gmod_smoothcamera = true,
+	gred_emp_empty = true,
 	none = true
 }
 
@@ -302,6 +303,12 @@ local hg_coolcamera = ConVarExists("hg_coolcamera") and GetConVar("hg_coolcamera
 CalcView = function(ply, origin, angles, fov, znear, zfar)
 	if g_VR and g_VR.active then return end
 	if GetViewEntity() ~= (ply or LocalPlayer()) then return end
+
+	if isfunction(hook.GetTable()["CalcView"]["DroneCam"]) then return end
+
+	if IsValid(ply.ActiveEmplacement) then return end
+
+	if ply:InVehicle() then return end
 
 	local view = {
 		["origin"] = origin,

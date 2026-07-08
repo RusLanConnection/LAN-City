@@ -642,7 +642,7 @@ PLUGIN.Bullet_StandartMask = MASK_SHOT
 			
 			if(tracer_body)then
 				local color = self.TracerSetings.TracerColor or color_white
-				local size = math.max(self.Size, self.TracerSetings.TracerHeadSize or 5) * 50
+				local size = math.max(self.Size, self.TracerSetings.TracerHeadSize or 5) * 30
 				
 				render.SetMaterial(tracer_body)
 				render.DrawSprite(self.Pos, size, size, color)
